@@ -1,0 +1,70 @@
+<!DOCTYPE html> 
+<html> 
+<head> 
+	<title>Hola verano!</title> 
+	<meta charset='UTF-8'>
+	<meta name="viewport" content="width=device-width, initial-scale=1"> 
+	<link rel="stylesheet" href="jq145/jquery.mobile-1.4.5.min.css" />
+	<script src="jquery-1.8.3.min.js"></script>
+	<script src="jq145/jquery.mobile-1.4.5.min.js"></script>
+	<script>
+		$(document).ready(function(){
+			db = window.openDatabase("miBD", "1.0", "BD de prueba", 1024*1024*5);
+			
+			db.transaction(function(tx){
+				tx.executeSql("create table usuario (usuario integer, contasenia integer)",[],function(tx){
+					tx.executeSql("insert into usuario values (1,1)");
+					tx.executeSql("insert into usuario values (2,2)");
+					tx.executeSql("insert into usuario values (3,3)");
+				});
+			});
+			
+			
+		});
+		
+		function cargarUsuarios(){
+			db.transaction(function(tx){
+				tx.executeSql("SELECT * FROM usuario",[],function(tx,results){
+					var usuarios = $("#usuarios");
+					usuarios.empty();
+					for(var i = 0; i< results.rows.length; i++)
+					{
+						usuarios.append("<li>"+results.rows.item(i).usuario+"</li>");
+					}
+				});
+			});
+		}
+		
+		function error(){
+		
+		}
+		
+		function success(tx){
+		
+		}
+	</script>
+</head> 
+<body> 
+
+<div data-role="page">
+
+	<div data-role="header" data-position="fixed">
+		<h1>Encabezado</h1>
+	</div><!-- /header -->
+
+	<div class="ui-content">
+		<h1>Hola verano!</h1>
+		<input type="button" value="Cargar!" onClick="cargarUsuarios();">
+		<ul id="usuarios">
+			
+		</ul>
+	</div><!-- /content -->
+	
+	<div data-role="footer" data-position="fixed" data-fullscreen="true">
+		<h1>Pie de Página</h1>
+	</div><!-- /header -->
+
+</div><!-- /page -->
+
+</body>
+</html>

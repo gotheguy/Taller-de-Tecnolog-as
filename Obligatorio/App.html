@@ -1,0 +1,166 @@
+<!doctype html>
+<html>
+<head>
+    <title>My Page</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="jq145/jquery.mobile-1.4.5.min.css"/>
+    <link rel="stylesheet" href="App.css"/>
+    <script src="jquery-1.8.3.min.js"></script>
+    <script src="App.js"></script>
+    <script src="jq145/jquery.mobile-1.4.5.min.js"></script>
+</head>
+<body>
+
+    <div data-role = "page" id = "page1">
+         <div data-role = "header">
+            <img class="appLogo" src="jq145/images/heartbeat.png"> 
+            <a href="#panel" id="sideMenu" class="ui-btn ui-icon-bars ui-btn-icon-notext ui-corner-all"></a>
+         </div>
+         
+         <div role = "main" class = "ui-content">
+            <h2 class="mc-text-center">Bienvenido!</h2>
+            <p class="mc-top-margin-1-5">Ya estoy registrado</p>
+            <a href="sign-in.html" class="ui-btn ui-btn-b ui-corner-all">Ingresar</a>
+            <p class="mc-top-margin-1-5">Aún no tienes una cuenta?</p>
+            <a href="#page2" class="ui-btn ui-btn-b ui-corner-all">Registrarme</a>
+            <p></p>
+         </div>
+         
+         <div data-role = "footer">
+            <h4>Footer</h4>
+         </div>
+      </div>
+
+        <div data-role="panel" id="panel">
+            <h3>Registrate</h3>
+            <h3>Registrate</h3>
+            <h3>Registrate</h3>
+        </div>
+      
+      <div data-role = "page" id = "page2">
+         <div data-role = "header">
+            <a href="#page1" class="ui-btn ui-icon-arrow-l ui-btn-icon-notext ui-corner-all"></a>
+            <img class="appLogo" src="jq145/images/heartbeat.png"> 
+            <a href="#page3" class="ui-btn ui-icon-arrow-r ui-btn-icon-notext ui-corner-all"></a>
+         </div>
+         
+         <div role = "main" class = "ui-content">
+                <h3>Registrate</h3>
+            <form action="form.php" method="post">
+                    <label class="registerInput" for="nombre">Nombre</label>
+                    <input type="text" name="nombre" id="nombre">
+
+                    <label class="registerInput" for="apellido">Apellido</label>
+                    <input type="text" name="apellido" id="apellido">
+
+                    <label class="registerInput" for="email">Email</label>
+                    <input type="email" name="email" id="email">
+
+                <fieldset class="ui-grid-a sideByside">
+                    <div class="ui-block-a">
+                        <label class="registerInput" for="documento">Documento</label>
+                        <input type="text" name="documento" id="documento">
+                    </div>
+                    <div class="ui-block-b">
+                        <label class="registerInput" for="telefono">Teléfono</label>
+                        <input type="text" name="telefono" id="telefono">
+                    </div>
+                </fieldset>
+                <div class="button">
+                    <a href="sign-in.html" class="ui-btn ui-btn-b ui-corner-all">Crear cuenta</a>
+                </div>
+            </form>
+         </div>
+         <div data-role = "footer">
+            <h4>Footer Text</h4>
+        </div>
+        </div>
+
+        <div data-role = "page" id = "page3">
+            <div data-role = "header">
+                <a href="#page2" class="ui-btn ui-icon-arrow-l ui-btn-icon-notext ui-corner-all"></a>
+                <img class="appLogo" src="jq145/images/heartbeat.png"> 
+                <a href="#page4" class="ui-btn ui-icon-arrow-r ui-btn-icon-notext ui-corner-all"></a>
+            </div>
+
+            <div role="main" class="ui-content">
+                <h3>Reserva tu consulta</h3>
+                <form class="ui-filterable">
+                    <input id="filterBasic-input" data-type="search" placeholder="Buscar..">
+                </form>
+                <ul data-role="listview" data-inset="true" data-filter="true" data-input="#filterBasic-input">
+                 <li><a href="index.html">   <!-- Thumbnail 1 -->
+                    <img src="jq145/images/doc1.jpg" />
+                    <h3>Dra. Claudia Ramos</h3>
+                   <p>Odontología</p>
+                    </a>
+                 </li>
+                         
+                 <li><a href="index.html">   <!-- Thumbnail 2 -->
+                    <img src="jq145/images/doc2.jpg" />
+                    <h3>Dra. Fernanda Olivera</h3>
+                   <p>Psiquiatría</p>
+                    </a>
+                 </li>
+                  
+                 <li><a href="index.html"> <!-- Thumbnail 3 -->
+                    <img src="jq145/images/doc3.jpg" />
+                    <h3>Dr. Marcelo Rodriguez</h3>
+                    <p>Cardiología</p>
+                    </a>
+                 </li>
+
+                 <li><a href="index.html"> <!-- Thumbnail 3 -->
+                    <img src="jq145/images/doc4.jpg" />
+                    <h3>Dr. Matías Puig</h3>
+                    <p>Oftalmología</p>
+                    </a>
+                 </li>
+
+                 <li><a href="index.html"> <!-- Thumbnail 3 -->
+                    <img src="jq145/images/doc5.jpg" />
+                    <h3>Dr. Armando Veira</h3>
+                    <p>Oftalmología</p>
+                    </a>
+                 </li>
+
+                 <li><a href="index.html"> <!-- Thumbnail 3 -->
+                    <img src="jq145/images/doc6.jpg" />
+                    <h3>Dr. Gonzalo Cabrera</h3>
+                    <p>Nefrología</p>
+                    </a>
+                 </li>
+
+                 <li><a href="index.html"> <!-- Thumbnail 3 -->
+                    <img src="jq145/images/doc7.jpg" />
+                    <h3>Dra. María Victoria Azzato</h3>
+                    <p>Urología</p>
+                    </a>
+                 </li>
+               </ul>
+              </div> <!-- /.ui-content -->
+              <div data-role = "footer">
+                <h4>Footer Text</h4>
+            </div>
+        </div>
+
+        <div data-role = "page" id = "page4">
+            <div data-role = "header">
+                <a href="#page2" class="ui-btn ui-icon-arrow-l ui-btn-icon-notext ui-corner-all"></a>
+                <img class="appLogo" src="jq145/images/heartbeat.png"> 
+            </div>
+
+            <ul data-role="listview" data-inset="true">
+                <li data-role="list-divider">Centro médico <span class="ui-li-count">1</span></li>
+                <li class="centroMedico">
+                    <h2 class="tituloCentroMedico">Clínica San Nicolás</h2><p class="ui-li-aside"><div id="diaActual"></div></p>
+                    <p class="direccionCentroMedico"><strong> Bulevar España 2422</strong></p>
+                    <p>11300, Montevideo</p>
+                </li>
+            </ul>
+        <div data-role = "footer">
+            <h4>Footer Text</h4>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,127 @@
+.sideByside .ui-block-a {
+    padding-right: 6px;
+}
+
+.sideByside .ui-block-b {
+    padding-left: 6px;
+}
+
+[data-role=footer] {
+    bottom:0; 
+    position:absolute !important; 
+    top: auto !important; 
+    width:100%;
+}
+
+.ui-input-text input, .ui-input-search input {
+    background: rgb(255, 255, 255);
+}
+
+#diaActual {
+    font-weight: 100;
+    font-size: 0.9em;
+    margin-top: 8px;
+    text-align: right;
+}
+
+.ui-body-a, .ui-page-theme-a .ui-body-inherit, 
+html .ui-bar-a .ui-body-inherit, html .ui-body-a .ui-body-inherit, 
+html body .ui-group-theme-a .ui-body-inherit, html .ui-panel-page-container-a {
+    background: rgb(248, 248, 248)
+}
+
+.tituloCentroMedico {
+    float: left;
+}
+
+.direccionCentroMedico {
+    margin-bottom: 0px;
+    clear: both;
+}
+
+.ui-input-search.ui-body-inherit.ui-corner-all.ui-shadow-inset.ui-input-has-clear {
+    padding-right: 0px;
+    margin-bottom: 20px;
+}
+
+ul li a img {
+    border-radius: 100%;
+    margin: 10px 10px;
+    width: 65px;
+    height: 65px;
+}
+
+.ui-li-has-thumb a {
+    background-color: white;
+}
+
+h3 {
+    font-weight: 100;
+}
+
+ul li a h3 {
+    font-size: 0.9em !important;
+    text-overflow: ellipsis;
+}
+
+ul li a p {
+    font-size: 0.9em !important;
+}
+
+.ui-btn.ui-btn-icon-right.ui-icon-carat-r {
+    background-color: rgb(253, 253, 253);
+    border-color: rgb(230, 229, 229);
+    box-shadow: none;
+    padding-right: 50px;
+}
+
+.ui-input-search:after {
+    padding-left: 15px;
+}
+
+.ui-input-search input {
+    padding-left: 2.5em;
+}
+
+.ui-btn, html .ui-bar-b .ui-btn, html .ui-body-b .ui-btn, html body .ui-group-theme-b .ui-btn, html head+body 
+.ui-btn.ui-btn-b, .ui-page-theme-b .ui-btn:visited, html .ui-bar-b .ui-btn:visited, html .ui-body-b .ui-btn:visited, 
+html body .ui-group-theme-b .ui-btn:visited, html head+body .ui-btn.ui-btn-b:visited {
+    background-color: rgb(255, 101, 83);
+    border: none;
+    text-shadow: none;
+}
+
+h2 {
+    color: rgb(100, 100, 100);
+    font-weight: 300;
+}
+
+.ui-btn.ui-btn-icon-notext.ui-corner-all {
+    background-color: rgb(179, 179, 179);
+    margin-top: 10px;
+}
+
+.ui-btn.ui-btn-icon-notext.ui-corner-all::after {
+    background-color: rgb(179, 179, 179);
+}
+
+.appLogo {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    padding: 10px 0px;
+    width: 40px;
+    height: 40px;
+}
+
+.registerInput {
+    padding-top: 10px;
+}
+
+#panel.ui-page.ui-page-theme-a.ui-page-active {
+    width: 200px;
+}
+
+#sideMenu {
+    margin-left: 10px;
+}

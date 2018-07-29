@@ -1,0 +1,53 @@
+<html>
+	<head>
+		<meta charset='UTF-8'>
+		<title>Ejercicio ToDoList</title>
+		<script src="http://code.jquery.com/jquery-1.8.3.min.js" type="text/javascript"></script>
+		<script type='text/javascript'>
+			function btnAgregar_click(){
+				var valorTarea = $("#txtTarea").val();
+				if(valorTarea != "")
+				{
+					$("#miLista").append("<tr><td>"+valorTarea+"</td>"+
+						"<td><input type='button' value='Borrar' "+
+						"onclick='borrar_click($(this))'/></td>"+
+						"<td><input type='button' value='Modificar' "+
+						"onclick='modificar_click($(this))'/></td></tr>");
+					limpiarCampos();
+				}
+			}
+			
+			function borrar_click(btn){
+				//btn.parent().parent().remove();
+				btn.closest("tr").remove();
+			}
+			
+			function modificar_click(btn){
+				var valorTarea = $("#txtTarea").val();
+				btn.closest("tr").find("td:first").text(valorTarea);
+				//btn.closest("tr").children(":first").text(valorTarea);
+				limpiarCampos();
+			}
+			
+			function limpiarCampos(){
+				$("#txtTarea").val("");
+			}
+		</script>
+		<style>
+			table, th, td {
+				border: 1px solid black;
+			}
+</style>
+	</head>
+	<body>
+		<h2>ToDoList!</h2>
+		Tarea:<input style='margin: 0 20px' id='txtTarea' type="text" placeholder="ingrese tarea..."/>
+		<input id='btnAgregar' type="button" value='Agregar'
+			onclick="btnAgregar_click()">
+		<table id='miLista'>
+			<tbody>
+			</tbody>
+		</table>
+	</body>
+</html>
+				
