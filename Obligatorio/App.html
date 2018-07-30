@@ -4,6 +4,7 @@
     <title>My Page</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="jq145/jquery.mobile-1.4.5.min.css"/>
+    <link rel="stylesheet" href="jq145/images/jQuery-Mobile-Icon-Pack-master/dist/jqm-icon-pack-fa.css"/>
     <link rel="stylesheet" href="App.css"/>
     <script src="jquery-1.8.3.min.js"></script>
     <script src="App.js"></script>
@@ -32,9 +33,11 @@
       
       <div data-role = "page" id = "page2">
          <div data-role = "header">
-            <a href="#page1" data-transition="slide" data-direction="reverse" class="ui-btn ui-icon-arrow-l ui-btn-icon-notext ui-corner-all"></a>
+            <a href="#page1" data-transition="slide" data-direction="reverse" data-icon="arrow-left"
+            class="ui-link ui-btn ui-icon-arrow-left ui-btn-icon-left ui-shadow ui-corner-all"></a>
             <img class="appLogo" src="jq145/images/heartbeat.png"> 
-            <a href="#page3" data-transition="slide" class="ui-btn ui-icon-arrow-r ui-btn-icon-notext ui-corner-all"></a>
+            <a href="#page3" data-transition="slide" data-icon="arrow-right"
+            class="ui-link ui-btn ui-icon-arrow-right ui-btn-icon-right ui-shadow ui-corner-all"></a>
          </div>
          
          <div role = "main" class = "ui-content">
@@ -68,7 +71,7 @@
             <h4>Footer Text</h4>
         </div>
         </div>
-
+        
         <div data-role = "page" id = "page3">
             <div data-role = "header">
                 <a href="#page2" data-transition="slide" data-direction="reverse" class="ui-btn ui-icon-arrow-l ui-btn-icon-notext ui-corner-all"></a>

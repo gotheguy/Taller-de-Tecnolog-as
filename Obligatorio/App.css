@@ -45,10 +45,10 @@ html body .ui-group-theme-a .ui-body-inherit, html .ui-panel-page-container-a {
 }
 
 ul li a img {
-    border-radius: 100%;
+    border-radius: 100% !important;
     margin: 10px 10px;
-    width: 65px;
-    height: 65px;
+    max-width: 70px !important;
+    max-height: 70px !important;
 }
 
 .ui-li-has-thumb a {
@@ -66,6 +66,10 @@ ul li a h3 {
 
 ul li a p {
     font-size: 0.9em !important;
+}
+
+ul li a {
+    height: 70px;
 }
 
 .ui-btn.ui-btn-icon-right.ui-icon-carat-r {
@@ -96,13 +100,26 @@ h2 {
     font-weight: 300;
 }
 
-.ui-btn.ui-btn-icon-notext.ui-corner-all {
-    background-color: rgb(179, 179, 179);
-    margin-top: 10px;
+.ui-link.ui-btn.ui-icon-arrow-left.ui-btn-icon-left.ui-shadow.ui-corner-all {
+    background-color: rgb(201, 201, 201);
+    margin-top: 5px;
+    padding: 15px;
+    border-radius: 100%;
 }
 
-.ui-btn.ui-btn-icon-notext.ui-corner-all::after {
-    background-color: rgb(179, 179, 179);
+.ui-link.ui-btn.ui-icon-arrow-left.ui-btn-icon-left.ui-shadow.ui-corner-all::after {
+    background-color: rgb(201, 201, 201);
+}
+
+.ui-link.ui-btn.ui-icon-arrow-right.ui-btn-icon-right.ui-shadow.ui-corner-all  {
+    background-color: rgb(201, 201, 201);
+    margin-top: 5px;
+    padding: 15px;
+    border-radius: 100%;
+}
+
+.ui-link.ui-btn.ui-icon-arrow-right.ui-btn-icon-right.ui-shadow.ui-corner-all::after {
+    background-color: rgb(201, 201, 201);
 }
 
 .appLogo {
@@ -110,8 +127,8 @@ h2 {
     margin-left: auto;
     margin-right: auto;
     padding: 10px 0px;
-    width: 40px;
-    height: 40px;
+    width: 30px;
+    height: 30px;
 }
 
 .registerInput {
