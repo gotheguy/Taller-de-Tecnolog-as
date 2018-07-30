@@ -14,7 +14,6 @@
     <div data-role = "page" id = "page1">
          <div data-role = "header">
             <img class="appLogo" src="jq145/images/heartbeat.png"> 
-            <a href="#panel" id="sideMenu" class="ui-btn ui-icon-bars ui-btn-icon-notext ui-corner-all"></a>
          </div>
          
          <div role = "main" class = "ui-content">
@@ -22,7 +21,7 @@
             <p class="mc-top-margin-1-5">Ya estoy registrado</p>
             <a href="sign-in.html" class="ui-btn ui-btn-b ui-corner-all">Ingresar</a>
             <p class="mc-top-margin-1-5">Aún no tienes una cuenta?</p>
-            <a href="#page2" class="ui-btn ui-btn-b ui-corner-all">Registrarme</a>
+            <a href="#page2" data-transition="slide" class="ui-btn ui-btn-b ui-corner-all">Registrarme</a>
             <p></p>
          </div>
          
@@ -30,18 +29,12 @@
             <h4>Footer</h4>
          </div>
       </div>
-
-        <div data-role="panel" id="panel">
-            <h3>Registrate</h3>
-            <h3>Registrate</h3>
-            <h3>Registrate</h3>
-        </div>
       
       <div data-role = "page" id = "page2">
          <div data-role = "header">
-            <a href="#page1" class="ui-btn ui-icon-arrow-l ui-btn-icon-notext ui-corner-all"></a>
+            <a href="#page1" data-transition="slide" data-direction="reverse" class="ui-btn ui-icon-arrow-l ui-btn-icon-notext ui-corner-all"></a>
             <img class="appLogo" src="jq145/images/heartbeat.png"> 
-            <a href="#page3" class="ui-btn ui-icon-arrow-r ui-btn-icon-notext ui-corner-all"></a>
+            <a href="#page3" data-transition="slide" class="ui-btn ui-icon-arrow-r ui-btn-icon-notext ui-corner-all"></a>
          </div>
          
          <div role = "main" class = "ui-content">
@@ -78,9 +71,9 @@
 
         <div data-role = "page" id = "page3">
             <div data-role = "header">
-                <a href="#page2" class="ui-btn ui-icon-arrow-l ui-btn-icon-notext ui-corner-all"></a>
+                <a href="#page2" data-transition="slide" data-direction="reverse" class="ui-btn ui-icon-arrow-l ui-btn-icon-notext ui-corner-all"></a>
                 <img class="appLogo" src="jq145/images/heartbeat.png"> 
-                <a href="#page4" class="ui-btn ui-icon-arrow-r ui-btn-icon-notext ui-corner-all"></a>
+                <a href="#page4" data-transition="slide" class="ui-btn ui-icon-arrow-r ui-btn-icon-notext ui-corner-all"></a>
             </div>
 
             <div role="main" class="ui-content">
@@ -146,7 +139,7 @@
 
         <div data-role = "page" id = "page4">
             <div data-role = "header">
-                <a href="#page2" class="ui-btn ui-icon-arrow-l ui-btn-icon-notext ui-corner-all"></a>
+                <a href="#page3" data-transition="slide" data-direction="reverse" class="ui-btn ui-icon-arrow-l ui-btn-icon-notext ui-corner-all"></a>
                 <img class="appLogo" src="jq145/images/heartbeat.png"> 
             </div>
 
