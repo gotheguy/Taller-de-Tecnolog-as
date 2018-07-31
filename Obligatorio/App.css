@@ -167,7 +167,7 @@ h2 {
     border: .55px solid rgb(235, 235, 235);
     background-color: rgb(252, 252, 252);
     transition: 0.3s;
-    width: 90%;
+    width: 80%;
     border-radius: 5px;
     display: block;
     margin-left: auto;
@@ -219,7 +219,14 @@ img {
     margin-left: 5px;
 }
 
-.doclist-option.ui-link.ui-btn.ui-icon-calendar.ui-btn-icon-left.ui-shadow.ui-corner-all::after,
-.doclist-option.ui-link.ui-btn.ui-icon-heart.ui-btn-icon-left.ui-shadow.ui-corner-all::after,
 .doclist-option.ui-link.ui-btn.ui-icon-star.ui-btn-icon-left.ui-shadow.ui-corner-all::after {
+    background-color: rgb(226, 226, 82);
+}
+
+.doclist-option.ui-link.ui-btn.ui-icon-heart.ui-btn-icon-left.ui-shadow.ui-corner-all::after {
+    background-color: rgb(240, 74, 74);
+}
+
+.doclist-option.ui-link.ui-btn.ui-icon-calendar.ui-btn-icon-left.ui-shadow.ui-corner-all::after {
+    background-color: rgb(40, 202, 75);
 }
