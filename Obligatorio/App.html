@@ -1,7 +1,8 @@
 <!doctype html>
 <html>
 <head>
-    <title>My Page</title>
+    <title>MedicORT</title>
+    <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="jq145/jquery.mobile-1.4.5.min.css"/>
     <link rel="stylesheet" href="jq145/images/jQuery-Mobile-Icon-Pack-master/dist/jqm-icon-pack-fa.css"/>
@@ -12,35 +13,63 @@
 </head>
 <body>
 
-    <div data-role = "page" id = "page1">
-         <div data-role = "header">
+    <div data-role="page" id="main-menu">
+         <div data-role="header" >
             <img class="appLogo" src="jq145/images/heartbeat.png"> 
          </div>
          
-         <div role = "main" class = "ui-content">
+         <div role="main" class = "ui-content">
             <h2 class="mc-text-center">Bienvenido!</h2>
             <p class="mc-top-margin-1-5">Ya estoy registrado</p>
-            <a href="sign-in.html" class="ui-btn ui-btn-b ui-corner-all">Ingresar</a>
+            <a href="#login" class="ui-btn ui-btn-b ui-corner-all">Ingresar</a>
             <p class="mc-top-margin-1-5">Aún no tienes una cuenta?</p>
-            <a href="#page2" data-transition="slide" class="ui-btn ui-btn-b ui-corner-all">Registrarme</a>
+            <a href="#register" data-transition="slide" class="ui-btn ui-btn-b ui-corner-all">Registrarme</a>
             <p></p>
          </div>
          
-         <div data-role = "footer">
-            <h4>Footer</h4>
-         </div>
+        <div data-role="footer" data-position="fixed">
+            <h4>Footer Text</h4>
+        </div>
       </div>
-      
-      <div data-role = "page" id = "page2">
-         <div data-role = "header">
-            <a href="#page1" data-transition="slide" data-direction="reverse" data-icon="arrow-left"
+
+      <div data-role="page" id="login">
+        <div data-role="header">
+           <a href="#main-menu" data-transition="slide" data-direction="reverse" data-icon="arrow-left"
+           class="ui-link ui-btn ui-icon-arrow-left ui-btn-icon-left ui-shadow ui-corner-all"></a>
+           <img class="appLogo" src="jq145/images/heartbeat.png"> 
+           <a href="#info-doc" data-transition="slide" data-icon="arrow-right"
+           class="ui-link ui-btn ui-icon-arrow-right ui-btn-icon-right ui-shadow ui-corner-all"></a>
+        </div>
+        
+        <div role="main" class="ui-content">
+               <h3>Ingresa a tu cuenta</h3>
+           <form action="form.php" method="post">
+                   <label class="registerInput" for="usuario">Usuario</label>
+                   <input type="text" name="usuario" id="usuario">
+
+                   <label class="registerInput" for="password">Contraseña</label>
+                   <input type="password" name="password" id="password">
+               <div class="button">
+                   <a href="sign-in.html" class="ui-btn ui-btn-b ui-corner-all">Ingresar</a>
+               </div>
+           </form>
+        </div>
+           <div data-role="footer" data-position="fixed">
+               <h4>Footer Text</h4>
+           </div>
+       </div>
+    </div>
+
+      <div data-role="page" id="register">
+         <div data-role="header">
+            <a href="#main-menu" data-transition="slide" data-direction="reverse" data-icon="arrow-left"
             class="ui-link ui-btn ui-icon-arrow-left ui-btn-icon-left ui-shadow ui-corner-all"></a>
             <img class="appLogo" src="jq145/images/heartbeat.png"> 
-            <a href="#page3" data-transition="slide" data-icon="arrow-right"
+            <a href="#info-doc" data-transition="slide" data-icon="arrow-right"
             class="ui-link ui-btn ui-icon-arrow-right ui-btn-icon-right ui-shadow ui-corner-all"></a>
          </div>
          
-         <div role = "main" class = "ui-content">
+         <div role="main" class="ui-content">
                 <h3>Registrate</h3>
             <form action="form.php" method="post">
                     <label class="registerInput" for="nombre">Nombre</label>
@@ -67,25 +96,28 @@
                 </div>
             </form>
          </div>
-         <div data-role = "footer">
-            <h4>Footer Text</h4>
+            <div data-role="footer" data-position="fixed">
+                <h4>Footer Text</h4>
+            </div>
         </div>
-        </div>
+    </div>
         
-        <div data-role = "page" id = "page3">
-            <div data-role = "header">
-                <a href="#page2" data-transition="slide" data-direction="reverse" class="ui-btn ui-icon-arrow-l ui-btn-icon-notext ui-corner-all"></a>
+        <div data-role="page" id="info-doc">
+            <div data-role="header">
+                <a href="#register" data-transition="slide" data-direction="reverse" data-icon="arrow-left"
+                class="ui-link ui-btn ui-icon-arrow-left ui-btn-icon-left ui-shadow ui-corner-all"></a>
                 <img class="appLogo" src="jq145/images/heartbeat.png"> 
-                <a href="#page4" data-transition="slide" class="ui-btn ui-icon-arrow-r ui-btn-icon-notext ui-corner-all"></a>
+                <a href="#centro-med" data-transition="slide" data-icon="arrow-right"
+                class="ui-link ui-btn ui-icon-arrow-right ui-btn-icon-right ui-shadow ui-corner-all"></a>
             </div>
 
-            <div role="main" class="ui-content">
-                <h3>Reserva tu consulta</h3>
+            <div role="main" class="ui-content doclist">
+                <h3 class="doclist-title">Reserva tu consulta</h3>
                 <form class="ui-filterable">
                     <input id="filterBasic-input" data-type="search" placeholder="Buscar..">
                 </form>
                 <ul data-role="listview" data-inset="true" data-filter="true" data-input="#filterBasic-input">
-                 <li><a href="index.html">   <!-- Thumbnail 1 -->
+                 <li><a href="#info-doc-detalle">   <!-- Thumbnail 1 -->
                     <img src="jq145/images/doc1.jpg" />
                     <h3>Dra. Claudia Ramos</h3>
                    <p>Odontología</p>
@@ -135,14 +167,43 @@
                  </li>
                </ul>
               </div> <!-- /.ui-content -->
-              <div data-role = "footer">
+              <div data-role="footer" data-position="fixed">
                 <h4>Footer Text</h4>
             </div>
         </div>
 
-        <div data-role = "page" id = "page4">
-            <div data-role = "header">
-                <a href="#page3" data-transition="slide" data-direction="reverse" class="ui-btn ui-icon-arrow-l ui-btn-icon-notext ui-corner-all"></a>
+        <div data-role="page" id="info-doc-detalle">
+                <div data-role="header">
+                    <a href="#register" data-transition="slide" data-direction="reverse" data-icon="arrow-left"
+                    class="ui-link ui-btn ui-icon-arrow-left ui-btn-icon-left ui-shadow ui-corner-all"></a>
+                    <img class="appLogo" src="jq145/images/heartbeat.png"> 
+                </div>
+    
+                <div role="main" class="ui-content doclist">
+                    <div class="card">
+                        <img src="jq145/images/rsz_13765.jpg">
+                        <div class="container">
+                            <h3 class="card-name"><b>Dra. Claudia Ramos</b></h3> 
+                            <h5 class="card-title">Doctora en Medicina</h5>
+                            <h5 class="card-prof">Odontología</h5> 
+                            <p class="card-clin">Clínica San Nicolás</p> 
+                            <h3 class="card-punt">83%</h3> 
+                        </div>
+                    </div>
+                </div>     
+                  <div data-role="footer" data-position="fixed" class="ui-bar">
+                    <div data-role="controlgroup" data-type="horizontal">
+                        <a href="index.html" data-role="button" data-icon="calendar" class="doclist-option"><span class="doclist-option-text">Reservar</span></a>
+                        <a href="index.html" data-role="button" data-icon="heart" class="doclist-option"><span class="doclist-option-text">Favorito</span></a>
+                        <a href="index.html" data-role="button" data-icon="star" class="doclist-option"><span class="doclist-option-text">Calificar</span></a>
+                    </div>
+                </div>
+            </div>
+
+        <div data-role="page" id="centro-med">
+            <div data-role="header">
+                <a href="#info-doc" data-transition="slide" data-direction="reverse" data-icon="arrow-left"
+                class="ui-link ui-btn ui-icon-arrow-left ui-btn-icon-left ui-shadow ui-corner-all"></a>
                 <img class="appLogo" src="jq145/images/heartbeat.png"> 
             </div>
 
@@ -154,7 +215,7 @@
                     <p>11300, Montevideo</p>
                 </li>
             </ul>
-        <div data-role = "footer">
+        <div data-role="footer" data-position="fixed">
             <h4>Footer Text</h4>
         </div>
     </div>

@@ -6,13 +6,6 @@
     padding-left: 6px;
 }
 
-[data-role=footer] {
-    bottom:0; 
-    position:absolute !important; 
-    top: auto !important; 
-    width:100%;
-}
-
 .ui-input-text input, .ui-input-search input {
     background: rgb(255, 255, 255);
 }
@@ -47,8 +40,8 @@ html body .ui-group-theme-a .ui-body-inherit, html .ui-panel-page-container-a {
 ul li a img {
     border-radius: 100% !important;
     margin: 10px 10px;
-    max-width: 70px !important;
-    max-height: 70px !important;
+    max-width: 60px !important;
+    max-height: 60px !important;
 }
 
 .ui-li-has-thumb a {
@@ -69,7 +62,23 @@ ul li a p {
 }
 
 ul li a {
-    height: 70px;
+    height: 60px;
+}
+
+.doclist-title {
+    padding: 0px 16px;
+}
+
+.ui-content.doclist.ui-listview.ui-listview-inset.ui-corner-all.ui-shadow {
+    padding: 16px 0px;
+}
+
+.ui-input-search.ui-body-inherit.ui-corner-all.ui-shadow-inset.ui-input-has-clear {
+    margin: 16px;
+}
+
+.ui-content.doclist {
+    padding: 0px;
 }
 
 .ui-btn.ui-btn-icon-right.ui-icon-carat-r {
@@ -79,12 +88,20 @@ ul li a {
     padding-right: 50px;
 }
 
+.ui-btn.ui-btn-icon-right.ui-icon-carat-r::after {
+    background-color: rgb(200, 200, 200);
+}
+
 .ui-input-search:after {
     padding-left: 15px;
 }
 
 .ui-input-search input {
     padding-left: 2.5em;
+}
+
+.ui-btn.ui-btn-b.ui-corner-all {
+    margin-top: 20px;
 }
 
 .ui-btn, html .ui-bar-b .ui-btn, html .ui-body-b .ui-btn, html body .ui-group-theme-b .ui-btn, html head+body 
@@ -103,6 +120,7 @@ h2 {
 .ui-link.ui-btn.ui-icon-arrow-left.ui-btn-icon-left.ui-shadow.ui-corner-all {
     background-color: rgb(201, 201, 201);
     margin-top: 5px;
+    margin-left: 10px;
     padding: 15px;
     border-radius: 100%;
 }
@@ -114,12 +132,14 @@ h2 {
 .ui-link.ui-btn.ui-icon-arrow-right.ui-btn-icon-right.ui-shadow.ui-corner-all  {
     background-color: rgb(201, 201, 201);
     margin-top: 5px;
+    margin-right: 10px;
     padding: 15px;
     border-radius: 100%;
 }
 
 .ui-link.ui-btn.ui-icon-arrow-right.ui-btn-icon-right.ui-shadow.ui-corner-all::after {
     background-color: rgb(201, 201, 201);
+    right: .22em;
 }
 
 .appLogo {
@@ -141,4 +161,65 @@ h2 {
 
 #sideMenu {
     margin-left: 10px;
+}
+
+.card {
+    border: .55px solid rgb(235, 235, 235);
+    background-color: rgb(252, 252, 252);
+    transition: 0.3s;
+    width: 90%;
+    border-radius: 5px;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 20px;
+}
+
+.card:hover {
+    box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
+}
+
+img {
+    border-radius: 5px 5px 0 0;
+    width: 100%;
+}
+
+.container {
+    padding: 2px 16px;
+}
+
+.card-name {
+    margin: 10px 0px 5px 0px;
+    color: rgb(105, 105, 105);
+}
+
+.card-title {
+    margin: 0px;
+    font-size: 0.90em;
+    color: rgb(134, 134, 134);
+}
+
+.card-prof {
+    margin: 5px 0px 0px 0px;
+    color: rgb(104, 104, 104);
+}
+
+.card-clin {
+    margin-top: 20px;
+    margin-bottom: 0px;
+}
+
+.card-punt {
+    text-align: right;
+    margin: 0px;
+    padding-bottom: 10px;
+}
+
+.doclist-option-text {
+    margin-left: 5px;
+}
+
+.doclist-option.ui-link.ui-btn.ui-icon-calendar.ui-btn-icon-left.ui-shadow.ui-corner-all::after,
+.doclist-option.ui-link.ui-btn.ui-icon-heart.ui-btn-icon-left.ui-shadow.ui-corner-all::after,
+.doclist-option.ui-link.ui-btn.ui-icon-star.ui-btn-icon-left.ui-shadow.ui-corner-all::after {
 }
