@@ -60,7 +60,7 @@
 
       <div data-role="page" id="login">
         <div data-role="header">
-           <a href="#main-menu" data-transition="slide" data-direction="reverse" data-icon="arrow-left"
+           <a href="#main-menu" data-rel=“back” data-transition="slide" data-direction="reverse" data-icon="arrow-left"
            class="ui-link ui-btn ui-icon-arrow-left ui-btn-icon-left ui-shadow ui-corner-all"></a>
            <img class="appLogo" src="jq145/images/heartbeat.png"> 
            <a href="#info-doc" data-transition="slide" data-icon="arrow-right"
@@ -70,11 +70,14 @@
         <div role="main" class="ui-content">
                <h3>Ingresa a tu cuenta</h3>
            <form action="form.php" method="post">
+                <fieldset data-role="fieldcontain">
                    <label class="registerInput" for="usuario">Usuario</label>
                    <input type="text" name="usuario" id="usuario">
-
+                </fieldset>
+                <fieldset data-role="fieldcontain">
                    <label class="registerInput" for="password">Contraseña</label>
                    <input type="password" name="password" id="passwordLog">
+                </fieldset>
                <div class="button">
                    <a href="sign-in.html" class="ui-btn ui-btn-b ui-corner-all">Ingresar</a>
                </div>
@@ -88,7 +91,7 @@
 
       <div data-role="page" id="register">
          <div data-role="header">
-            <a href="#main-menu" data-transition="slide" data-direction="reverse" data-icon="arrow-left"
+            <a href="#main-menu" data-rel=“back” data-transition="slide" data-direction="reverse" data-icon="arrow-left"
             class="ui-link ui-btn ui-icon-arrow-left ui-btn-icon-left ui-shadow ui-corner-all"></a>
             <img class="appLogo" src="jq145/images/heartbeat.png"> 
             <a href="#info-doc" data-transition="slide" data-icon="arrow-right"
@@ -98,18 +101,22 @@
          <div role="main" class="ui-content">
                 <h3>Registrate</h3>
             <form action="form.php" method="post">
+                <fieldset data-role="fieldcontain">
                     <label class="registerInput" for="nombre">Nombre</label>
                     <input type="text" name="nombre" id="nombre">
-
+                </fieldset>
+                <fieldset data-role="fieldcontain">
                     <label class="registerInput" for="apellido">Apellido</label>
                     <input type="text" name="apellido" id="apellido">
-
+                </fieldset>
+                <fieldset data-role="fieldcontain">
                     <label class="registerInput" for="password">Contraseña</label>
                     <input type="password" name="password" id="passwordReg">
-
+                </fieldset>
+                <fieldset data-role="fieldcontain">
                     <label class="registerInput" for="apellido">Apellido</label>
                     <input type="text" name="apellido" id="apellido">
-
+                </fieldset>
                 <fieldset class="ui-grid-a sideByside">
                     <div class="ui-block-a">
                         <label class="registerInput" for="documento">Documento</label>
@@ -133,7 +140,7 @@
         
         <div data-role="page" id="info-doc">
             <div data-role="header">
-                <a href="#register" data-transition="slide" data-direction="reverse" data-icon="arrow-left"
+                <a href="#register" data-rel=“back” data-transition="slide" data-direction="reverse" data-icon="arrow-left"
                 class="ui-link ui-btn ui-icon-arrow-left ui-btn-icon-left ui-shadow ui-corner-all"></a>
                 <img class="appLogo" src="jq145/images/heartbeat.png"> 
                 <a href="#centro-med" data-transition="slide" data-icon="arrow-right"
@@ -146,7 +153,7 @@
                     <input id="filterBasic-input" data-type="search" placeholder="Buscar..">
                 </form>
                 <ul data-role="listview" data-inset="true" data-filter="true" data-input="#filterBasic-input">
-                 <li><a href="#info-doc-detalle">   <!-- Thumbnail 1 -->
+                 <li><a href="#info-doc-detalle" data-transition="slide">   <!-- Thumbnail 1 -->
                     <img src="jq145/images/doc1.jpg" />
                     <h3>Dra. Claudia Ramos</h3>
                    <p>Odontología</p>
@@ -203,7 +210,7 @@
 
         <div data-role="page" id="info-doc-detalle">
                 <div data-role="header">
-                    <a href="#info-doc" data-transition="slide" data-direction="reverse" data-icon="arrow-left"
+                    <a href="#info-doc" data-rel=“back” data-transition="slide" data-direction="reverse" data-icon="arrow-left"
                     class="ui-link ui-btn ui-icon-arrow-left ui-btn-icon-left ui-shadow ui-corner-all"></a>
                     <img class="appLogo" src="jq145/images/heartbeat.png"> 
                 </div>
@@ -233,7 +240,7 @@
 
         <div data-role="page" id="centro-med">
             <div data-role="header">
-                <a href="#info-doc" data-transition="slide" data-direction="reverse" data-icon="arrow-left"
+                <a href="#info-doc" data-rel=“back” data-transition="slide" data-direction="reverse" data-icon="arrow-left"
                 class="ui-link ui-btn ui-icon-arrow-left ui-btn-icon-left ui-shadow ui-corner-all"></a>
                 <img class="appLogo" src="jq145/images/heartbeat.png"> 
             </div>
