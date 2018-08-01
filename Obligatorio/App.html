@@ -8,8 +8,34 @@
     <link rel="stylesheet" href="jq145/images/jQuery-Mobile-Icon-Pack-master/dist/jqm-icon-pack-fa.css"/>
     <link rel="stylesheet" href="App.css"/>
     <script src="jquery-1.8.3.min.js"></script>
-    <script src="App.js"></script>
     <script src="jq145/jquery.mobile-1.4.5.min.js"></script>
+    <script>
+            $(window).load(function() {
+            var d = new Date();
+            let month = String(d.getMonth() + 1);
+            let day = String(d.getDate());
+            const year = String(d.getFullYear());
+
+            $("#diaActual").html(day + "/" + month + "/" + year);
+        });
+
+        function callWeatherApi(){
+            var nomCiudad = $("#txtCiudad").val();
+            $.ajax({
+                url: "http://api.openweathermap.org/data/2.5/weather",
+                type: "GET",
+                dataType: "json",
+                data: {q: nomCiudad, appid: "1573c2baa2cfe07cb8ee524834829651", lang: "es", units: "metric"},
+                success: function(response){
+                    console.log("success",response);
+                    $("#mensaje").text(response.weather[0].description);
+                },error: function(response){
+                    console.log("error",response);
+                    $("#mensaje").text("No hay nadie!");
+                }
+            });
+        }
+    </script>
 </head>
 <body>
 
@@ -28,7 +54,7 @@
          </div>
          
         <div data-role="footer" data-position="fixed">
-            <h4>Footer Text</h4>
+            <h4></h4>
         </div>
       </div>
 
@@ -48,14 +74,14 @@
                    <input type="text" name="usuario" id="usuario">
 
                    <label class="registerInput" for="password">Contraseña</label>
-                   <input type="password" name="password" id="password">
+                   <input type="password" name="password" id="passwordLog">
                <div class="button">
                    <a href="sign-in.html" class="ui-btn ui-btn-b ui-corner-all">Ingresar</a>
                </div>
            </form>
         </div>
            <div data-role="footer" data-position="fixed">
-               <h4>Footer Text</h4>
+               <h4></h4>
            </div>
        </div>
     </div>
@@ -78,8 +104,11 @@
                     <label class="registerInput" for="apellido">Apellido</label>
                     <input type="text" name="apellido" id="apellido">
 
-                    <label class="registerInput" for="email">Email</label>
-                    <input type="email" name="email" id="email">
+                    <label class="registerInput" for="password">Contraseña</label>
+                    <input type="password" name="password" id="passwordReg">
+
+                    <label class="registerInput" for="apellido">Apellido</label>
+                    <input type="text" name="apellido" id="apellido">
 
                 <fieldset class="ui-grid-a sideByside">
                     <div class="ui-block-a">
@@ -97,7 +126,7 @@
             </form>
          </div>
             <div data-role="footer" data-position="fixed">
-                <h4>Footer Text</h4>
+                <h4></h4>
             </div>
         </div>
     </div>
@@ -168,13 +197,13 @@
                </ul>
               </div> <!-- /.ui-content -->
               <div data-role="footer" data-position="fixed">
-                <h4>Footer Text</h4>
+                <h4></h4>
             </div>
         </div>
 
         <div data-role="page" id="info-doc-detalle">
                 <div data-role="header">
-                    <a href="#register" data-transition="slide" data-direction="reverse" data-icon="arrow-left"
+                    <a href="#info-doc" data-transition="slide" data-direction="reverse" data-icon="arrow-left"
                     class="ui-link ui-btn ui-icon-arrow-left ui-btn-icon-left ui-shadow ui-corner-all"></a>
                     <img class="appLogo" src="jq145/images/heartbeat.png"> 
                 </div>
@@ -191,11 +220,13 @@
                         </div>
                     </div>
                 </div>     
-                  <div data-role="footer" data-position="fixed" class="ui-bar">
-                    <div data-role="controlgroup" data-type="horizontal">
-                        <a href="index.html" data-role="button" data-icon="calendar" class="doclist-option"><span class="doclist-option-text">Reservar</span></a>
-                        <a href="index.html" data-role="button" data-icon="heart" class="doclist-option"><span class="doclist-option-text">Favorito</span></a>
-                        <a href="index.html" data-role="button" data-icon="star" class="doclist-option"><span class="doclist-option-text">Calificar</span></a>
+                  <div data-role="footer" data-position="fixed">
+                    <div data-role="navbar">
+                        <ul>
+                            <li><a href="index.html" data-role="button" data-icon="calendar" class="doclist-option inlineIcon"><span class="doclist-option-text">Reservar</span></a></li>
+                            <li><a href="index.html" data-role="button" data-icon="heart" class="doclist-option inlineIcon"><span class="doclist-option-text">Favorito</span></a></li>
+                            <li><a href="index.html" data-role="button" data-icon="star" class="doclist-option inlineIcon"><span class="doclist-option-text">Calificar</span></a></li>
+                        </ul>
                     </div>
                 </div>
             </div>
@@ -216,7 +247,7 @@
                 </li>
             </ul>
         <div data-role="footer" data-position="fixed">
-            <h4>Footer Text</h4>
+            <h4></h4>
         </div>
     </div>
 </body>
