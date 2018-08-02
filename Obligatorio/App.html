@@ -6,9 +6,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="jq145/jquery.mobile-1.4.5.min.css"/>
     <link rel="stylesheet" href="jq145/images/jQuery-Mobile-Icon-Pack-master/dist/jqm-icon-pack-fa.css"/>
+    <link href="https://cdn.jsdelivr.net/npm/jtsage-datebox-jqm@4.4.1/jtsage-datebox.min.css" rel="stylesheet" type="text/css">
     <link rel="stylesheet" href="App.css"/>
     <script src="jquery-1.8.3.min.js"></script>
     <script src="jq145/jquery.mobile-1.4.5.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/jtsage-datebox-jqm@4.4.1/jtsage-datebox.min.js" type="text/javascript"></script>
     <script>
             $(window).load(function() {
             var d = new Date();
@@ -19,36 +21,41 @@
             $("#diaActual").html(day + "/" + month + "/" + year);
         });
 
-        function callWeatherApi(){
-            var nomCiudad = $("#txtCiudad").val();
-            $.ajax({
-                url: "http://api.openweathermap.org/data/2.5/weather",
-                type: "GET",
-                dataType: "json",
-                data: {q: nomCiudad, appid: "1573c2baa2cfe07cb8ee524834829651", lang: "es", units: "metric"},
-                success: function(response){
-                    console.log("success",response);
-                    $("#mensaje").text(response.weather[0].description);
-                },error: function(response){
-                    console.log("error",response);
-                    $("#mensaje").text("No hay nadie!");
+        function loginUsuario(){
+			$.mobile.loading("show");
+			$.ajax({
+				data: {email: $('#usuarioLog').val(), password: $('#passwordLog').val()},
+				type: "GET",
+				dataType: "json",
+				url: "http://medicort.tribus.com.uy/login",
+				success: function(data){
+					$.mobile.loading("hide");
+                    if(data.resultado_login) {
+                        window.location.replace("#main-menu");
+                    }
+				},
+                error: function(data){
+                    $.mobile.loading("hide");
+                    if(!data.resultado_login) {
+                        alert("Vos no pasas ney");
+                    }
                 }
-            });
-        }
+			});
+		}
     </script>
 </head>
 <body>
 
-    <div data-role="page" id="main-menu">
+    <div data-role="page" id="start-menu">
          <div data-role="header" >
             <img class="appLogo" src="jq145/images/heartbeat.png"> 
          </div>
          
          <div role="main" class = "ui-content">
-            <h2 class="mc-text-center">Bienvenido!</h2>
-            <p class="mc-top-margin-1-5">Ya estoy registrado</p>
+            <h2>Bienvenido!</h2>
+            <p>Ya estoy registrado</p>
             <a href="#login" data-transition="slide" class="ui-btn ui-btn-b ui-corner-all">Ingresar</a>
-            <p class="mc-top-margin-1-5">Aún no tienes una cuenta?</p>
+            <p>Aún no tienes una cuenta?</p>
             <a href="#register" data-transition="slide" class="ui-btn ui-btn-b ui-corner-all">Registrarme</a>
             <p></p>
          </div>
@@ -60,75 +67,72 @@
 
       <div data-role="page" id="login">
         <div data-role="header">
-           <a href="#main-menu" data-rel=“back” data-transition="slide" data-direction="reverse" data-icon="arrow-left"
+           <a href="#start-menu" data-rel=“back” data-transition="slide" data-direction="reverse" data-icon="arrow-left"
            class="ui-link ui-btn ui-icon-arrow-left ui-btn-icon-left ui-shadow ui-corner-all"></a>
            <img class="appLogo" src="jq145/images/heartbeat.png"> 
-           <a href="#info-doc" data-transition="slide" data-icon="arrow-right"
-           class="ui-link ui-btn ui-icon-arrow-right ui-btn-icon-right ui-shadow ui-corner-all"></a>
         </div>
         
         <div role="main" class="ui-content">
-               <h3>Ingresa a tu cuenta</h3>
-           <form action="form.php" method="post">
+          <h3>Ingresa a tu cuenta</h3>
+           <form type="button">
                 <fieldset data-role="fieldcontain">
                    <label class="registerInput" for="usuario">Usuario</label>
-                   <input type="text" name="usuario" id="usuario">
+                   <input type="text" name="usuario" id="usuarioLog">
                 </fieldset>
                 <fieldset data-role="fieldcontain">
                    <label class="registerInput" for="password">Contraseña</label>
                    <input type="password" name="password" id="passwordLog">
                 </fieldset>
                <div class="button">
-                   <a href="sign-in.html" class="ui-btn ui-btn-b ui-corner-all">Ingresar</a>
+                   <a href="#" class="ui-btn ui-btn-b ui-corner-all" onclick="loginUsuario()">Ingresar</a>
                </div>
            </form>
         </div>
            <div data-role="footer" data-position="fixed">
                <h4></h4>
            </div>
-       </div>
-    </div>
+        </div>
 
       <div data-role="page" id="register">
          <div data-role="header">
-            <a href="#main-menu" data-rel=“back” data-transition="slide" data-direction="reverse" data-icon="arrow-left"
+            <a href="#start-menu" data-rel=“back” data-transition="slide" data-direction="reverse" data-icon="arrow-left"
             class="ui-link ui-btn ui-icon-arrow-left ui-btn-icon-left ui-shadow ui-corner-all"></a>
             <img class="appLogo" src="jq145/images/heartbeat.png"> 
-            <a href="#info-doc" data-transition="slide" data-icon="arrow-right"
+            <a href="#main-menu" data-transition="slide" data-icon="arrow-right"
             class="ui-link ui-btn ui-icon-arrow-right ui-btn-icon-right ui-shadow ui-corner-all"></a>
          </div>
          
          <div role="main" class="ui-content">
                 <h3>Registrate</h3>
-            <form action="form.php" method="post">
+            <form type="button">
                 <fieldset data-role="fieldcontain">
                     <label class="registerInput" for="nombre">Nombre</label>
-                    <input type="text" name="nombre" id="nombre">
+                    <input type="text" name="nombre" id="nombreReg">
                 </fieldset>
                 <fieldset data-role="fieldcontain">
                     <label class="registerInput" for="apellido">Apellido</label>
-                    <input type="text" name="apellido" id="apellido">
+                    <input type="text" name="apellido" id="apellidoReg">
                 </fieldset>
                 <fieldset data-role="fieldcontain">
                     <label class="registerInput" for="password">Contraseña</label>
                     <input type="password" name="password" id="passwordReg">
                 </fieldset>
                 <fieldset data-role="fieldcontain">
-                    <label class="registerInput" for="apellido">Apellido</label>
-                    <input type="text" name="apellido" id="apellido">
+                    <label class="registerInput" for="email">Email</label>
+                    <input type="email" name="email" id="emailReg">
                 </fieldset>
                 <fieldset class="ui-grid-a sideByside">
                     <div class="ui-block-a">
                         <label class="registerInput" for="documento">Documento</label>
-                        <input type="text" name="documento" id="documento">
+                        <input type="text" name="documento" id="documentoReg">
                     </div>
                     <div class="ui-block-b">
                         <label class="registerInput" for="telefono">Teléfono</label>
-                        <input type="text" name="telefono" id="telefono">
+                        <input type="text" name="telefono" id="telefonoReg">
                     </div>
                 </fieldset>
                 <div class="button">
-                    <a href="sign-in.html" class="ui-btn ui-btn-b ui-corner-all">Crear cuenta</a>
+                    <a href="#" class="ui-btn ui-btn-b ui-corner-all">Crear cuenta</a>
                 </div>
             </form>
          </div>
@@ -136,69 +140,84 @@
                 <h4></h4>
             </div>
         </div>
+
+    <div data-role="page" id="main-menu">
+        <div data-role="header">
+            <img class="appLogo" src="jq145/images/heartbeat.png"> 
+        </div>
+
+        <div role="main" class="ui-content">
+            <ul data-role="listview">
+                <li><a href="#info-doc" data-transition="slide" class="main-menu-item">Buscar profesionales</a></li>
+                <li><a href="#" data-transition="slide" class="main-menu-item">Mis consultas</a></li>
+                <li><a href="#centro-med" data-transition="slide" class="main-menu-item">Centros médicos</a></li>
+                <li><a href="#" data-transition="slide" class="main-menu-item">Favoritos</a></li>
+                <li><a href="#start-menu" data-transition="slide" class="main-menu-item">Cerrar sesión</a></li>
+            </ul>
+        </div>
+        <div data-role="footer" data-position="fixed">
+            <h4></h4>
+        </div>
     </div>
-        
+
         <div data-role="page" id="info-doc">
             <div data-role="header">
-                <a href="#register" data-rel=“back” data-transition="slide" data-direction="reverse" data-icon="arrow-left"
+                <a href="#main-menu" data-rel=“back” data-transition="slide" data-direction="reverse" data-icon="arrow-left"
                 class="ui-link ui-btn ui-icon-arrow-left ui-btn-icon-left ui-shadow ui-corner-all"></a>
                 <img class="appLogo" src="jq145/images/heartbeat.png"> 
-                <a href="#centro-med" data-transition="slide" data-icon="arrow-right"
-                class="ui-link ui-btn ui-icon-arrow-right ui-btn-icon-right ui-shadow ui-corner-all"></a>
             </div>
 
             <div role="main" class="ui-content doclist">
-                <h3 class="doclist-title">Reserva tu consulta</h3>
                 <form class="ui-filterable">
                     <input id="filterBasic-input" data-type="search" placeholder="Buscar..">
                 </form>
                 <ul data-role="listview" data-inset="true" data-filter="true" data-input="#filterBasic-input">
-                 <li><a href="#info-doc-detalle" data-transition="slide">   <!-- Thumbnail 1 -->
+                 <li><a href="#info-doc-detalle" data-transition="slide" class="doclist-item">   <!-- Thumbnail 1 -->
                     <img src="jq145/images/doc1.jpg" />
-                    <h3>Dra. Claudia Ramos</h3>
-                   <p>Odontología</p>
+                    <h3 class="doclist-name">Dra. Claudia Ramos</h3>
+                    <p class="doclist-specialty">Odontología</p>
                     </a>
                  </li>
                          
-                 <li><a href="index.html">   <!-- Thumbnail 2 -->
+                 <li><a href="index.html" class="doclist-item">   <!-- Thumbnail 2 -->
                     <img src="jq145/images/doc2.jpg" />
-                    <h3>Dra. Fernanda Olivera</h3>
-                   <p>Psiquiatría</p>
+                    <h3 class="doclist-name">Dra. Fernanda Olivera</h3>
+                    <p class="doclist-specialty">Psiquiatría</p>
                     </a>
                  </li>
                   
-                 <li><a href="index.html"> <!-- Thumbnail 3 -->
+                 <li><a href="index.html" class="doclist-item"> <!-- Thumbnail 3 -->
                     <img src="jq145/images/doc3.jpg" />
-                    <h3>Dr. Marcelo Rodriguez</h3>
-                    <p>Cardiología</p>
+                    <h3 class="doclist-name">Dr. Marcelo Rodriguez</h3>
+                    <p class="doclist-specialty">Cardiología</p>
                     </a>
                  </li>
 
-                 <li><a href="index.html"> <!-- Thumbnail 3 -->
+                 <li><a href="index.html" class="doclist-item"> <!-- Thumbnail 3 -->
                     <img src="jq145/images/doc4.jpg" />
-                    <h3>Dr. Matías Puig</h3>
-                    <p>Oftalmología</p>
+                    <h3 class="doclist-name">Dr. Matías Puig</h3>
+                    <p class="doclist-specialty">Oftalmología</p>
                     </a>
                  </li>
 
-                 <li><a href="index.html"> <!-- Thumbnail 3 -->
+                 <li><a href="index.html" class="doclist-item"> <!-- Thumbnail 3 -->
                     <img src="jq145/images/doc5.jpg" />
-                    <h3>Dr. Armando Veira</h3>
-                    <p>Oftalmología</p>
+                    <h3 class="doclist-name">Dr. Armando Veira</h3>
+                    <p class="doclist-specialty">Oftalmología</p>
                     </a>
                  </li>
 
-                 <li><a href="index.html"> <!-- Thumbnail 3 -->
+                 <li><a href="index.html" class="doclist-item"> <!-- Thumbnail 3 -->
                     <img src="jq145/images/doc6.jpg" />
-                    <h3>Dr. Gonzalo Cabrera</h3>
-                    <p>Nefrología</p>
+                    <h3 class="doclist-name">Dr. Gonzalo Cabrera</h3>
+                    <p class="doclist-specialty">Nefrología</p>
                     </a>
                  </li>
 
-                 <li><a href="index.html"> <!-- Thumbnail 3 -->
+                 <li><a href="index.html" class="doclist-item"> <!-- Thumbnail 3 -->
                     <img src="jq145/images/doc7.jpg" />
                     <h3>Dra. María Victoria Azzato</h3>
-                    <p>Urología</p>
+                    <p class="doclist-specialty">Urología</p>
                     </a>
                  </li>
                </ul>
@@ -230,29 +249,71 @@
                   <div data-role="footer" data-position="fixed">
                     <div data-role="navbar">
                         <ul>
-                            <li><a href="index.html" data-role="button" data-icon="calendar" class="doclist-option inlineIcon"><span class="doclist-option-text">Reservar</span></a></li>
-                            <li><a href="index.html" data-role="button" data-icon="heart" class="doclist-option inlineIcon"><span class="doclist-option-text">Favorito</span></a></li>
-                            <li><a href="index.html" data-role="button" data-icon="star" class="doclist-option inlineIcon"><span class="doclist-option-text">Calificar</span></a></li>
+                            <li><a href="#doc-consulta" data-role="button" data-icon="calendar" data-transition="slideup"
+                            class="doclist-option inlineIcon"><span class="doclist-option-text">Agendar</span></a></li>
+                            <li><a href="index.html" data-role="button" data-icon="heart" data-transition="slideup"
+                            class="doclist-option inlineIcon"><span class="doclist-option-text">Favorito</span></a></li>
+                            <li><a href="index.html" data-role="button" data-icon="star" data-transition="slideup"
+                            class="doclist-option inlineIcon"><span class="doclist-option-text">Calificar</span></a></li>
                         </ul>
                     </div>
                 </div>
             </div>
 
-        <div data-role="page" id="centro-med">
+        <div data-role="page" id="doc-consulta">
             <div data-role="header">
-                <a href="#info-doc" data-rel=“back” data-transition="slide" data-direction="reverse" data-icon="arrow-left"
+                <a href="#info-doc-detalle" data-rel=“back” data-transition="slideup" data-direction="reverse" data-icon="arrow-left"
                 class="ui-link ui-btn ui-icon-arrow-left ui-btn-icon-left ui-shadow ui-corner-all"></a>
                 <img class="appLogo" src="jq145/images/heartbeat.png"> 
             </div>
 
-            <ul data-role="listview" data-inset="true">
-                <li data-role="list-divider">Centro médico <span class="ui-li-count">1</span></li>
-                <li class="centroMedico">
-                    <h2 class="tituloCentroMedico">Clínica San Nicolás</h2><p class="ui-li-aside"><div id="diaActual"></div></p>
-                    <p class="direccionCentroMedico"><strong> Bulevar España 2422</strong></p>
-                    <p>11300, Montevideo</p>
-                </li>
-            </ul>
+            <div role="main" class="ui-content">
+                <form type="button">
+                    <fieldset data-role="fieldcontain">
+                       <label class="ReservaInput" for="fecha">Fecha</label>
+                       <input type="text" name="fecha" id="fechaRes" data-role="datebox" data-options='{"mode":"calbox", "useLang":"es",
+                       "overrideDateFormat": "%d/%m/%Y" }'>
+                    </fieldset>
+                    <fieldset data-role="fieldcontain">
+                       <label class="ReservaInput" for="hora">Hora</label>
+                       <input type="text" name="hora" id="horaRes" data-role="datebox" data-options='{"mode":"timebox"}'>
+                    </fieldset>              
+                    <fieldset data-role="fieldcontain">
+                       <label class="ReservaInput" for="doctor">Doctor</label>
+                       <input type="text" name="doctor" id="doctorRes">
+                    </fieldset>
+                    <fieldset data-role="fieldcontain">
+                       <label class="ReservaInput" for="centro">Centro médico</label>
+                       <input type="text" name="centro" id="centroRes">
+                    </fieldset>
+                   <div class="button">
+                       <a href="sign-in.html" class="ui-btn ui-btn-b ui-corner-all">Reservar</a>
+                   </div>
+               </form>
+              </div>
+          <div data-role="footer" data-position="fixed">
+              <h4></h4>
+          </div>
+      </div>
+
+
+        <div data-role="page" id="centro-med">
+            <div data-role="header">
+                <a href="#main-menu" data-rel=“back” data-transition="slide" data-direction="reverse" data-icon="arrow-left"
+                class="ui-link ui-btn ui-icon-arrow-left ui-btn-icon-left ui-shadow ui-corner-all"></a>
+                <img class="appLogo" src="jq145/images/heartbeat.png"> 
+            </div>
+
+            <div role="main" class="ui-content">
+              <ul data-role="listview" data-inset="true">
+                  <li data-role="list-divider">Centro médico <span class="ui-li-count">1</span></li>
+                  <li class="centroMedico">
+                      <h2 class="tituloCentroMedico">Clínica San Nicolás</h2><p class="ui-li-aside"></p><div id="diaActual"></div></p>
+                      <p class="direccionCentroMedico"><strong> Bulevar España 2422</strong></p>
+                      <p>11300, Montevideo</p>
+                  </li>
+              </ul>
+            </div> 
         <div data-role="footer" data-position="fixed">
             <h4></h4>
         </div>

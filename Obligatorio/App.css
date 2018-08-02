@@ -40,33 +40,26 @@ html body .ui-group-theme-a .ui-body-inherit, html .ui-panel-page-container-a {
 ul li a img {
     border-radius: 100% !important;
     margin: 10px 10px;
-    max-width: 60px !important;
-    max-height: 60px !important;
+    max-width: 50px !important;
+    max-height: 50px !important;
 }
 
 .ui-li-has-thumb a {
     background-color: white;
 }
 
-h3 {
+.doclist-name {
     font-weight: 100;
-}
-
-ul li a h3 {
-    font-size: 0.9em !important;
+    font-size: 0.85em !important;
     text-overflow: ellipsis;
 }
 
-ul li a p {
-    font-size: 0.9em !important;
+.doclist-specialty {
+    font-size: 0.80em !important;
 }
 
-ul li a {
+.doclist-item {
     height: 60px;
-}
-
-.doclist-title {
-    padding: 16px 16px 8px 16px;
 }
 
 .ui-content.doclist.ui-listview.ui-listview-inset.ui-corner-all.ui-shadow {
@@ -81,15 +74,26 @@ ul li a {
     padding: 0px;
 }
 
-.ui-btn.ui-btn-icon-right.ui-icon-carat-r {
+.doclist-item.ui-btn.ui-btn-icon-right.ui-icon-carat-r {
+    padding: 11.2px 50px 0px 80px;
+}
+
+.doclist-item.ui-btn.ui-btn-icon-right.ui-icon-carat-r, .main-menu-item.ui-btn.ui-btn-icon-right.ui-icon-carat-r {
     background-color: rgb(253, 253, 253);
     border-color: rgb(230, 229, 229);
     box-shadow: none;
-    padding-right: 50px;
 }
 
-.ui-btn.ui-btn-icon-right.ui-icon-carat-r::after {
+.main-menu-item.ui-btn.ui-btn-icon-right.ui-icon-carat-r {
+    color: rgb(107, 107, 107);
+    font-size: 0.97em;
+    padding: 30px 50px 30px 40px;  
+    font-weight: 600;
+}
+
+.doclist-item.ui-btn.ui-btn-icon-right.ui-icon-carat-r::after, .main-menu-item.ui-btn.ui-btn-icon-right.ui-icon-carat-r::after {
     background-color: rgb(216, 216, 216);
+    right: 1.5em;
 }
 
 .ui-input-search:after {
@@ -269,4 +273,8 @@ img {
     display: inline-block;
     position: relative;
     vertical-align: middle;
+}
+
+.main-menu-item {
+    padding-left: 0px;
 }
