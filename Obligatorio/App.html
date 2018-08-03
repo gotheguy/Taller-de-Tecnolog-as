@@ -19,9 +19,13 @@
             const year = String(d.getFullYear());
 
             $("#diaActual").html(day + "/" + month + "/" + year);
+
+            $("div").html(function (i, html) {
+            return html.replace(/&nbsp;/g, '');
+            });
         });
 
-        function loginUsuario(){
+        function login(){
 			$.mobile.loading("show");
 			$.ajax({
 				data: {email: $('#usuarioLog').val(), password: $('#passwordLog').val()},
@@ -37,14 +41,56 @@
                 error: function(data){
                     $.mobile.loading("hide");
                     if(!data.resultado_login) {
-                        alert("Vos no pasas ney");
+                        $('#errorPopupLogin').popup();
+                        $("#errorPopupLogin").popup("open");
+                    }
+                }
+			});
+        }
+        
+        function registrar(){
+			$.mobile.loading("show");
+			$.ajax({
+                data: {email: $('#emailReg').val(), password: $('#passwordReg').val(), nombre: $('#nombreReg').val(), apellido: $('#apellidoReg').val(),
+                       documento: $('#documentoReg').val(), telefono: $('#telefonoReg').val()},
+				type: "POST",
+				dataType: "json",
+				url: "http://medicort.tribus.com.uy/registrar",
+				success: function(data){
+					$.mobile.loading("hide");
+                    if(data.retorno = "OK") {
+                        window.location.replace("#main-menu");
+                    }
+				},
+                error: function(data){
+                    $.mobile.loading("hide");
+                    if(data.retorno = "ERROR") {
+                        if(data.retorno = "Ya existe un usuario con el email = '" + data.email + "'") {
+                            $('#errorPopupEmailRegister').popup();
+                            $("#errorPopupEmailRegister").popup("open");                
+                        } else {
+                            $('#errorPopupLogin').popup();
+                            $("#errorPopupLogin").popup("open");
+                        }
+                    }
+                },
+                error: function(data){
+                    $.mobile.loading("hide");
+                    if(data.retorno = "ERROR") {
+                        if(data.retorno = "Ya existe un usuario con el telefono = '" + data.telefono + "'") {
+                            $('#errorPopupTelRegister').popup();
+                            $("#errorPopupTelRegister").popup("open");
+                        } else {
+                            $('#errorPopupLogin').popup();
+                            $("#errorPopupLogin").popup("open");
+                        }
                     }
                 }
 			});
 		}
     </script>
 </head>
-<body>
+    <body>
 
     <div data-role="page" id="start-menu">
          <div data-role="header" >
@@ -73,10 +119,9 @@
         </div>
         
         <div role="main" class="ui-content">
-          <h3>Ingresa a tu cuenta</h3>
            <form type="button">
                 <fieldset data-role="fieldcontain">
-                   <label class="registerInput" for="usuario">Usuario</label>
+                   <label class="registerInput" for="usuario">Email</label>
                    <input type="text" name="usuario" id="usuarioLog">
                 </fieldset>
                 <fieldset data-role="fieldcontain">
@@ -84,9 +129,19 @@
                    <input type="password" name="password" id="passwordLog">
                 </fieldset>
                <div class="button">
-                   <a href="#" class="ui-btn ui-btn-b ui-corner-all" onclick="loginUsuario()">Ingresar</a>
+                   <a href="" class="ui-btn ui-btn-b ui-corner-all" onclick="login()">Ingresar</a>
                </div>
            </form>
+           <div data-role="popup" id="errorPopupLogin" class="errorPopup" data-overlay-theme="a" data-theme="a" data-dismissible="true" data-transition="slideup">
+                <div data-role="header" data-theme="a">
+                    <h1>¡Upsss!</h1>
+                </div>
+                <div role="main" class="ui-content popup-text">
+                    <h3 class="ui-title">Tu email y/o contraseña son incorrectos</h3>
+                        <p class="ui-subtitle">¡Vuelve a intentarlo!</p>
+                    <a href="#" class="ui-btn ui-btn-b ui-corner-all ui-ok-button" data-rel="back" data-transition="slideup">OK</a>
+                </div>
+            </div>
         </div>
            <div data-role="footer" data-position="fixed">
                <h4></h4>
@@ -98,12 +153,9 @@
             <a href="#start-menu" data-rel=“back” data-transition="slide" data-direction="reverse" data-icon="arrow-left"
             class="ui-link ui-btn ui-icon-arrow-left ui-btn-icon-left ui-shadow ui-corner-all"></a>
             <img class="appLogo" src="jq145/images/heartbeat.png"> 
-            <a href="#main-menu" data-transition="slide" data-icon="arrow-right"
-            class="ui-link ui-btn ui-icon-arrow-right ui-btn-icon-right ui-shadow ui-corner-all"></a>
          </div>
          
          <div role="main" class="ui-content">
-                <h3>Registrate</h3>
             <form type="button">
                 <fieldset data-role="fieldcontain">
                     <label class="registerInput" for="nombre">Nombre</label>
@@ -132,9 +184,29 @@
                     </div>
                 </fieldset>
                 <div class="button">
-                    <a href="#" class="ui-btn ui-btn-b ui-corner-all">Crear cuenta</a>
+                    <a href="#" class="ui-btn ui-btn-b ui-corner-all" onclick="registrar()">Crear cuenta</a>
                 </div>
             </form>
+            <div data-role="popup" id="errorPopupEmailRegister" class="errorPopup" data-overlay-theme="a" data-theme="a" data-dismissible="true" data-transition="slideup">
+                    <div data-role="header" data-theme="a">
+                        <h1>¡Upsss!</h1>
+                    </div>
+                    <div role="main" class="ui-content popup-text">
+                        <h3 class="ui-title">Ya existe un usuario con ese email</h3>
+                            <p class="ui-subtitle">¡Vuelve a intentarlo!</p>
+                        <a href="#" class="ui-btn ui-btn-b ui-corner-all ui-ok-button" data-rel="back" data-transition="slideup">OK</a>
+                    </div>
+                </div>
+                <div data-role="popup" id="errorPopupTelRegister" class="errorPopup" data-overlay-theme="a" data-theme="a" data-dismissible="true" data-transition="slideup">
+                    <div data-role="header" data-theme="a">
+                        <h1>¡Upsss!</h1>
+                    </div>
+                    <div role="main" class="ui-content popup-text">
+                        <h3 class="ui-title">Ya existe un usuario con ese teléfono</h3>
+                            <p class="ui-subtitle">¡Vuelve a intentarlo!</p>
+                        <a href="#" class="ui-btn ui-btn-b ui-corner-all ui-ok-button" data-rel="back" data-transition="slideup">OK</a>
+                    </div>
+                </div>
          </div>
             <div data-role="footer" data-position="fixed">
                 <h4></h4>
@@ -152,7 +224,7 @@
                 <li><a href="#" data-transition="slide" class="main-menu-item">Mis consultas</a></li>
                 <li><a href="#centro-med" data-transition="slide" class="main-menu-item">Centros médicos</a></li>
                 <li><a href="#" data-transition="slide" class="main-menu-item">Favoritos</a></li>
-                <li><a href="#start-menu" data-transition="slide" class="main-menu-item">Cerrar sesión</a></li>
+                <li><a href="#start-menu" data-transition="slide" data-direction="reverse" class="main-menu-item">Cerrar sesión</a></li>
             </ul>
         </div>
         <div data-role="footer" data-position="fixed">
