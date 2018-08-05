@@ -49,12 +49,14 @@ ul li a img {
 }
 
 .doclist-name {
+    color: rgb(107, 107, 107);
     font-weight: 100;
     font-size: 0.85em !important;
     text-overflow: ellipsis;
 }
 
 .doclist-specialty {
+    color: rgb(107, 107, 107);
     font-size: 0.80em !important;
 }
 
@@ -194,11 +196,11 @@ img {
 }
 
 .container {
-    padding: 2px 16px;
+    padding: 2px 20px 5px;
 }
 
 .card-name {
-    margin: 10px 0px 5px 0px;
+    margin: 5px 0px;
     color: rgb(105, 105, 105);
     font-size: 1.10em;
 }
@@ -206,7 +208,7 @@ img {
 .card-title {
     margin: 0px;
     font-size: 0.90em;
-    color: rgb(134, 134, 134);
+    color: rgb(104, 104, 104);
 }
 
 .card-prof {
@@ -215,14 +217,23 @@ img {
 }
 
 .card-clin {
-    margin-top: 20px;
-    margin-bottom: 0px;
+    margin: 10px 0px;
+    text-overflow: ellipsis;
+    display: block;
+    text-align: center;
+    text-decoration: none;
+    background-color: rgb(255, 101, 83);
 }
 
 .card-punt {
-    text-align: right;
     margin: 0px;
     padding-bottom: 10px;
+    text-align: right;
+    color: rgb(104, 104, 104);
+}
+
+.ui-btn.ui-btn-b.ui-corner-all.card-clin {
+    margin: 0px 0px 10px 0px;
 }
 
 .doclist-option {
