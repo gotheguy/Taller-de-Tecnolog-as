@@ -1,115 +1,330 @@
-/*
- * Licensed to the Apache Software Foundation (ASF) under one
- * or more contributor license agreements.  See the NOTICE file
- * distributed with this work for additional information
- * regarding copyright ownership.  The ASF licenses this file
- * to you under the Apache License, Version 2.0 (the
- * "License"); you may not use this file except in compliance
- * with the License.  You may obtain a copy of the License at
- *
- * http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing,
- * software distributed under the License is distributed on an
- * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
- * KIND, either express or implied.  See the License for the
- * specific language governing permissions and limitations
- * under the License.
- */
-* {
-    -webkit-tap-highlight-color: rgba(0,0,0,0); /* make transparent link selection, adjust last value opacity 0 to 1.0 */
+.sideByside .ui-block-a {
+    padding-right: 6px;
 }
 
-body {
-    -webkit-touch-callout: none;                /* prevent callout to copy image, etc when tap to hold */
-    -webkit-text-size-adjust: none;             /* prevent webkit from resizing text to fit */
-    -webkit-user-select: none;                  /* prevent copy paste, to allow, change 'none' to 'text' */
-    background-color:#E4E4E4;
-    background-image:linear-gradient(top, #A7A7A7 0%, #E4E4E4 51%);
-    background-image:-webkit-linear-gradient(top, #A7A7A7 0%, #E4E4E4 51%);
-    background-image:-ms-linear-gradient(top, #A7A7A7 0%, #E4E4E4 51%);
-    background-image:-webkit-gradient(
-        linear,
-        left top,
-        left bottom,
-        color-stop(0, #A7A7A7),
-        color-stop(0.51, #E4E4E4)
-    );
-    background-attachment:fixed;
-    font-family:'HelveticaNeue-Light', 'HelveticaNeue', Helvetica, Arial, sans-serif;
-    font-size:12px;
-    height:100%;
-    margin:0px;
-    padding:0px;
-    text-transform:uppercase;
-    width:100%;
+.sideByside .ui-block-b {
+    padding-left: 6px;
 }
 
-/* Portrait layout (default) */
-.app {
-    background:url(../img/logo.png) no-repeat center top; /* 170px x 200px */
-    position:absolute;             /* position in the center of the screen */
-    left:50%;
-    top:50%;
-    height:50px;                   /* text area height */
-    width:225px;                   /* text area width */
-    text-align:center;
-    padding:180px 0px 0px 0px;     /* image height is 200px (bottom 20px are overlapped with text) */
-    margin:-115px 0px 0px -112px;  /* offset vertical: half of image height and text area height */
-                                   /* offset horizontal: half of text area width */
+.ui-input-text input, .ui-input-search input {
+    background: rgb(255, 255, 255);
 }
 
-/* Landscape layout (with min-width) */
-@media screen and (min-aspect-ratio: 1/1) and (min-width:400px) {
-    .app {
-        background-position:left center;
-        padding:75px 0px 75px 170px;  /* padding-top + padding-bottom + text area = image height */
-        margin:-90px 0px 0px -198px;  /* offset vertical: half of image height */
-                                      /* offset horizontal: half of image width and text area width */
-    }
+#diaActual {
+    font-weight: 100;
+    font-size: 0.9em;
+    margin-top: 8px;
+    text-align: right;
 }
 
-h1 {
-    font-size:24px;
-    font-weight:normal;
-    margin:0px;
-    overflow:visible;
-    padding:0px;
-    text-align:center;
+.ui-body-a, .ui-page-theme-a .ui-body-inherit, 
+html .ui-bar-a .ui-body-inherit, html .ui-body-a .ui-body-inherit, 
+html body .ui-group-theme-a .ui-body-inherit, html .ui-panel-page-container-a {
+    background: rgb(248, 248, 248)
 }
 
-.event {
-    border-radius:4px;
-    -webkit-border-radius:4px;
-    color:#FFFFFF;
-    font-size:12px;
-    margin:0px 30px;
-    padding:2px 0px;
+.tituloCentroMedico {
+    float: left;
 }
 
-.event.listening {
-    background-color:#333333;
-    display:block;
+.direccionCentroMedico {
+    margin-bottom: 0px;
+    clear: both;
 }
 
-.event.received {
-    background-color:#4B946A;
-    display:none;
+.ui-input-search.ui-body-inherit.ui-corner-all.ui-shadow-inset.ui-input-has-clear {
+    padding-right: 0px;
+    margin-bottom: 20px;
 }
 
-@keyframes fade {
-    from { opacity: 1.0; }
-    50% { opacity: 0.4; }
-    to { opacity: 1.0; }
+ul li a img {
+    border-radius: 100% !important;
+    margin: 10px 10px;
+    max-width: 50px !important;
+    max-height: 50px !important;
 }
- 
-@-webkit-keyframes fade {
-    from { opacity: 1.0; }
-    50% { opacity: 0.4; }
-    to { opacity: 1.0; }
+
+.ui-li-has-thumb a {
+    background-color: white;
 }
- 
-.blink {
-    animation:fade 3000ms infinite;
-    -webkit-animation:fade 3000ms infinite;
+
+.doclist-name {
+    color: rgb(107, 107, 107);
+    font-weight: 100;
+    font-size: 0.85em !important;
+    text-overflow: ellipsis;
+}
+
+.doclist-specialty {
+    color: rgb(107, 107, 107);
+    font-size: 0.80em !important;
+}
+
+.doclist-item {
+    height: 60px;
+}
+
+.ui-content.doclist.ui-listview.ui-listview-inset.ui-corner-all.ui-shadow {
+    padding: 16px 0px;
+}
+
+.ui-input-search.ui-body-inherit.ui-corner-all.ui-shadow-inset.ui-input-has-clear {
+    margin: 16px;
+}
+
+.ui-content.doclist {
+    padding: 0px;
+}
+
+.doclist-item.ui-btn.ui-btn-icon-right.ui-icon-carat-r {
+    padding: 11.2px 50px 0px 80px;
+}
+
+.doclist-item.ui-btn.ui-btn-icon-right.ui-icon-carat-r, .main-menu-item.ui-btn.ui-btn-icon-right.ui-icon-carat-r {
+    background-color: rgb(253, 253, 253);
+    border-color: rgb(230, 229, 229);
+    box-shadow: none;
+}
+
+.main-menu-item.ui-btn.ui-btn-icon-right.ui-icon-carat-r {
+    color: rgb(107, 107, 107);
+    font-size: 0.97em;
+    padding: 20px 50px 20px 40px !important;  
+    font-weight: 600;
+}
+
+.doclist-item.ui-btn.ui-btn-icon-right.ui-icon-carat-r::after, .main-menu-item.ui-btn.ui-btn-icon-right.ui-icon-carat-r::after {
+    background-color: rgb(216, 216, 216);
+    right: 1.5em;
+}
+
+.ui-input-search:after {
+    padding-left: 15px;
+}
+
+.ui-input-search input {
+    padding-left: 2.5em;
+}
+
+.ui-btn.ui-btn-b.ui-corner-all {
+    margin-top: 20px;
+}
+
+.ui-btn, html .ui-bar-b .ui-btn, html .ui-body-b .ui-btn, html body .ui-group-theme-b .ui-btn, html head+body 
+.ui-btn.ui-btn-b, .ui-page-theme-b .ui-btn:visited, html .ui-bar-b .ui-btn:visited, html .ui-body-b .ui-btn:visited, 
+html body .ui-group-theme-b .ui-btn:visited, html head+body .ui-btn.ui-btn-b:visited {
+    background-color: rgb(255, 101, 83);
+    border: none;
+    text-shadow: none;
+}
+
+.ui-btn:active , .ui-btn::after{
+    background-color: rgb(247, 73, 54);
+}
+
+h2 {
+    color: rgb(100, 100, 100);
+    font-weight: 300;
+}
+
+.ui-link.ui-btn.ui-icon-arrow-left.ui-btn-icon-left.ui-shadow.ui-corner-all {
+    background-color: rgb(201, 201, 201);
+    margin-top: 5px;
+    margin-left: 10px;
+    padding: 15px;
+    border-radius: 100%;
+}
+
+.ui-link.ui-btn.ui-icon-arrow-left.ui-btn-icon-left.ui-shadow.ui-corner-all::after {
+    background-color: rgb(201, 201, 201);
+}
+
+.ui-link.ui-btn.ui-icon-arrow-right.ui-btn-icon-right.ui-shadow.ui-corner-all  {
+    background-color: rgb(201, 201, 201);
+    margin-top: 5px;
+    margin-right: 10px;
+    padding: 15px;
+    border-radius: 100%;
+}
+
+.ui-link.ui-btn.ui-icon-arrow-right.ui-btn-icon-right.ui-shadow.ui-corner-all::after {
+    background-color: rgb(201, 201, 201);
+    right: .22em;
+}
+
+.appLogo {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    padding: 10px 0px;
+    width: 30px;
+    height: 30px;
+}
+
+.registerInput {
+    padding-top: 10px;
+}
+
+#panel.ui-page.ui-page-theme-a.ui-page-active {
+    width: 200px;
+}
+
+#sideMenu {
+    margin-left: 10px;
+}
+
+fieldset.ui-field-contain {
+    padding: 5px 0px !important;
+}
+
+.card {
+    border: .55px solid rgb(235, 235, 235);
+    background-color: rgb(252, 252, 252);
+    transition: 0.3s;
+    width: 90%;
+    border-radius: 5px;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 20px;
+}
+
+img {
+    border-radius: 5px 5px 0 0;
+    width: 100%;
+    height: 100%;
+}
+
+.container {
+    padding: 2px 20px 5px;
+}
+
+.card-name {
+    margin: 5px 0px;
+    color: rgb(105, 105, 105);
+    font-size: 1.10em;
+}
+
+.card-title {
+    margin: 0px;
+    font-size: 0.90em;
+    color: rgb(104, 104, 104);
+}
+
+.card-prof {
+    margin: 5px 0px 0px 0px;
+    color: rgb(104, 104, 104);
+}
+
+.card-clin {
+    margin: 10px 0px;
+    text-overflow: ellipsis;
+    display: block;
+    text-align: center;
+    text-decoration: none;
+    background-color: rgb(255, 101, 83);
+}
+
+.card-punt {
+    margin: 0px;
+    padding-bottom: 10px;
+    text-align: right;
+    color: rgb(104, 104, 104);
+}
+
+.ui-btn.ui-btn-b.ui-corner-all.card-clin {
+    margin: 0px 0px 10px 0px;
+}
+
+.doclist-option {
+    height: 20px;
+}
+
+.doclist-option-text {
+    margin-top: 0px;
+    color: rgb(105, 105, 105);
+}
+
+.doclist-option.ui-link.ui-btn.ui-icon-star.ui-shadow.ui-corner-all::after {
+    background-color: rgb(235, 235, 37);
+    height: 30px;
+    width: 30px;
+    border-radius: 2em;  
+    left: 47%;
+}
+
+.doclist-option.ui-link.ui-btn.ui-icon-star.ui-shadow.ui-corner-all {
+    padding-top: 40px !important;
+    padding-bottom: 0px;
+}
+
+.doclist-option.ui-link.ui-btn.ui-icon-heart.ui-shadow.ui-corner-all::after {
+    background-color: rgb(240, 74, 74);
+    height: 30px;
+    width: 30px;
+    border-radius: 2em;  
+    left: 47%;
+}
+
+.doclist-option.ui-link.ui-btn.ui-icon-heart.ui-shadow.ui-corner-all {
+    padding-top: 40px !important;
+    padding-bottom: 0px;
+}
+
+.doclist-option.ui-link.ui-btn.ui-icon-calendar.ui-shadow.ui-corner-all::after {
+    background-color: rgb(14, 197, 54);    
+    height: 30px;
+    width: 30px;
+    border-radius: 2em; 
+    left: 47%;
+}
+
+.doclist-option.ui-link.ui-btn.ui-icon-calendar.ui-shadow.ui-corner-all {
+    padding-top: 40px !important;
+    padding-bottom: 0px;
+}
+
+.inlineIcon {
+    display: inline-block;
+    position: relative;
+    vertical-align: middle;
+}
+
+.main-menu-item {
+    padding-left: 0px;
+}
+
+.errorPopup {
+    width: 100%; 
+    box-shadow: 0 0 12px rgba(189, 189, 189, 0.6);
+    background-color: rgb(250, 250, 250);
+    bottom: 130px;
+}
+
+.ui-content.popup-text {
+    padding: 0px 16px; 
+}
+
+.ui-header.ui-bar-a {
+    height: 50px;
+    bottom: 20px;
+    line-height: 20px;
+    font-size: 1.30em;
+    background-color: rgb(240, 240, 240);
+}
+
+.ui-title {
+    margin: 5px 0px 20px 0px !important;
+    font-size: 1.10em;
+    font-weight: 400;
+    color: rgb(119, 119, 119);
+}
+
+.ui-subtitle {
+    font-size: 0.98em;
+    color: rgb(126, 126, 126);
+}
+
+.ui-ok-button {
+    margin-bottom: 15px;
 }
