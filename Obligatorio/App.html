@@ -12,6 +12,12 @@
     <script src="jq145/jquery.mobile-1.4.5.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/jtsage-datebox-jqm@4.4.1/jtsage-datebox.min.js"></script>
     <script>
+        $(document).ready(function(){
+            $("div").html(function (i, html) {
+                return html.replace(/&nbsp;/g, '');
+            });
+        });
+
         function login(){
 			$.mobile.loading("show");
 			$.ajax({
@@ -65,9 +71,6 @@
             getProfesionales(); 
         });
 
-
-
-
 		function getProfesionales(){
 			$.ajax({
 				type: "GET",
@@ -79,7 +82,7 @@
                     $.each(data.profesionales, function(i,item) {
                         var aux = data.profesionales[i];
                         items.push('<li><a href="#info-doc-detalle" data-transition="slide" class="doclist-item">' +
-                        '<img src="jq145/images/doc5.jpg" alt="Imagen doctor"><h3 class="doclist-name">Dr. ' +
+                        '<img src="' + aux.foto + '" alt="Imagen doctor"><h3 class="doclist-name">Dr. ' +
                             aux.nombre + ' ' + aux.apellido + '</h3><p class="doclist-specialty">' + 
                             aux.especialidad + '</p></a></li>');
                         });

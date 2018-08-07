@@ -1,0 +1,370 @@
+<!doctype html>
+<html>
+<head>
+    <title>MedicORT</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="jq145/jquery.mobile-1.4.5.min.css" type="text/css">
+    <link rel="stylesheet" href="jq145/images/jQuery-Mobile-Icon-Pack-master/dist/jqm-icon-pack-fa.css"/>
+    <link href="https://cdn.jsdelivr.net/npm/jtsage-datebox-jqm@4.4.1/jtsage-datebox.min.css" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" href="App.css" type="text/css">
+    <script src="jq145/jquery-1.8.3.min.js"></script>
+    <script src="jq145/jquery.mobile-1.4.5.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/jtsage-datebox-jqm@4.4.1/jtsage-datebox.min.js"></script>
+    <script>
+        $(document).ready(function(){
+            $("div").html(function (i, html) {
+                return html.replace(/&nbsp;/g, '');
+            });
+        });
+
+        function login(){
+			$.mobile.loading("show");
+			$.ajax({
+				data: {email: $('#usuarioLog').val(), password: $('#passwordLog').val()},
+				type: "GET",
+				dataType: "json",
+				url: "http://medicort.tribus.com.uy/login",
+				success: function(data){
+					$.mobile.loading("hide");
+                    if(data.resultado_login) {
+                        window.location.replace("#main-menu");
+                    }
+				},
+                error: function(data){
+                    $.mobile.loading("hide");
+                    if(!data.resultado_login) {
+                        $('#errorPopupLogin').popup();
+                        $("#errorPopupLogin").popup("open");
+                    }
+                }
+			});
+        }
+        
+        
+        function registrar() {
+			$.mobile.loading("show");
+			$.ajax({
+                data: {email: $('#emailReg').val(), password: $('#passwordReg').val(), nombre: $('#nombreReg').val(), apellido: $('#apellidoReg').val(),
+                       documento: $('#documentoReg').val(), telefono: $('#telefonoReg').val()},
+				type: "POST",
+				dataType: "json",
+				url: "http://medicort.tribus.com.uy/registrar",
+				success: function(data){
+					$.mobile.loading("hide");
+                    if(data.retorno = "OK") {
+                        window.location.replace("#main-menu");
+                    }
+				},
+                error: function(data,jqXHR) {
+                    $.mobile.loading("hide");
+                    if(jqXHR.status = 500) {
+                        if(data.retorno = "ERROR") {
+                            $('#errorPopupRegister').popup();
+                            $("#errorPopupRegister").popup("open"); 
+                        }
+                    }
+                }
+			});
+		}
+
+        $(document).on("pagebeforecreate","#info-doc",function(){
+            getProfesionales(); 
+        });
+
+		function getProfesionales(){
+			$.ajax({
+				type: "GET",
+				dataType: "json",
+				url: "http://medicort.tribus.com.uy/getProfesionales",
+				success: function(data){
+                    if(data.retorno = "OK") {
+                    var items = []; 
+                    $.each(data.profesionales, function(i,item) {
+                        var aux = data.profesionales[i];
+                        items.push('<li><a href="#info-doc-detalle" data-transition="slide" class="doclist-item">' +
+                        '<img src="' + aux.foto + '" alt="Imagen doctor"><h3 class="doclist-name">Dr. ' +
+                            aux.nombre + ' ' + aux.apellido + '</h3><p class="doclist-specialty">' + 
+                            aux.especialidad + '</p></a></li>');
+                        });
+                        $('#listview').append(items.join(''));
+                        $('#listview').listview().listview('refresh');
+
+                        $.each(data.profesionales, function(i,item) {
+                            var aux = data.profesionales[i];
+                            $('li').click(function(){
+                                getDetalleProfesional(aux.nombre,aux.apellido);
+                            });
+                        });
+                    }
+                }
+            });
+        }
+
+		function getDetalleProfesional(nombreDoc,apellidoDoc){
+            $.mobile.loading("show");
+			$.ajax({
+                data: {nombre: nombreDoc, apellido: apellidoDoc},
+				type: "GET",
+				dataType: "json",
+				url: "http://medicort.tribus.com.uy/getDetalleProfesional",
+				success: function(data){
+                    if(data.retorno = "OK") {
+                        var items = []; 
+                        $(".card").html("");
+                        $.mobile.loading("hide");
+                            items.push('<img src="jq145/images/doc5.jpg" alt="Imagen doctor en detalle"><div class="container">' + 
+                            '<h3 class="card-name"><b>Dr. ' + data.profesional.nombre + ' ' + data.profesional.apellido + 
+                            '</b></h3><h5 class="card-title">' + data.profesional.titulo + '</h5><h5 class="card-prof">' + 
+                            data.profesional.especialidad + '</h5><h3 class="card-punt">' + (Math.round(data.profesional.puntuacion * 100) / 100)  + 
+                            '</h3><a class="ui-btn ui-btn-b ui-corner-all card-clin">' + data.profesional.centroMedico.nombre + '</a></div>');
+                        $('.card').append(items.join(''));
+                    }
+                }
+            });
+        }
+    </script>
+</head>
+<body>
+    <div data-role="page" id="start-menu">
+        <div data-role="header">
+            <img class="appLogo" src="jq145/images/heartbeat.png" alt="logo"> 
+        </div>
+        
+        <div role="main" class = "ui-content">
+            <h2>Bienvenido!</h2>
+            <p>Ya estoy registrado</p>
+            <a href="#login" data-transition="slide" class="ui-btn ui-btn-b ui-corner-all">Ingresar</a>
+            <p>Aún no tienes una cuenta?</p>
+            <a href="#register" data-transition="slide" class="ui-btn ui-btn-b ui-corner-all">Registrarme</a>
+            <p></p>
+        </div>
+        
+        <div data-role="footer" data-position="fixed">
+            <h4></h4>
+        </div>
+    </div>
+
+    <div data-role="page" id="login">
+        <div data-role="header">
+        <a href="#start-menu" data-rel="back" data-transition="slide" data-direction="reverse" data-icon="arrow-left"
+        class="ui-link ui-btn ui-icon-arrow-left ui-btn-icon-left ui-shadow ui-corner-all"></a>
+        <img class="appLogo" src="jq145/images/heartbeat.png" alt="logo"> 
+        </div>
+        
+        <div role="main" class="ui-content">
+        <form id="formLogin" autocomplete="off">
+                <fieldset data-role="fieldcontain">
+                <label class="registerInput" for="usuarioLog">Email</label>
+                <input type="text" name="usuario" id="usuarioLog">
+                </fieldset>
+                <fieldset data-role="fieldcontain">
+                <label class="registerInput" for="passwordLog">Contraseña</label>
+                <input type="password" name="password" id="passwordLog">
+                </fieldset>
+            <div class="button">
+                <a href="" class="ui-btn ui-btn-b ui-corner-all" onclick="login()">Ingresar</a>
+            </div>
+        </form>
+        <div data-role="popup" id="errorPopupLogin" class="errorPopup" data-overlay-theme="a" data-theme="a" data-dismissible="true" data-transition="slideup">
+                <div data-role="header" data-theme="a">
+                    <h1>¡Upsss!</h1>
+                </div>
+                <div role="main" class="ui-content popup-text">
+                    <h3 class="ui-title">Tu email y/o contraseña son incorrectos</h3>
+                        <p class="ui-subtitle">¡Vuelve a intentarlo!</p>
+                    <a href="#" class="ui-btn ui-btn-b ui-corner-all ui-ok-button" data-rel="back" data-transition="slideup">OK</a>
+                </div>
+            </div>
+        </div>
+        <div data-role="footer" data-position="fixed">
+            <h4></h4>
+        </div>
+        </div>
+
+    <div data-role="page" id="register">
+        <div data-role="header">
+            <a href="#start-menu" data-rel="back" data-transition="slide" data-direction="reverse" data-icon="arrow-left"
+            class="ui-link ui-btn ui-icon-arrow-left ui-btn-icon-left ui-shadow ui-corner-all"></a>
+            <img class="appLogo" src="jq145/images/heartbeat.png" alt="logo"> 
+        </div>
+        
+        <div role="main" class="ui-content">
+            <form id="formRegister" autocomplete="off">
+                <fieldset data-role="fieldcontain">
+                    <label class="registerInput" for="nombreReg">Nombre</label>
+                    <input type="text" name="nombre" id="nombreReg">
+                </fieldset>
+                <fieldset data-role="fieldcontain">
+                    <label class="registerInput" for="apellidoReg">Apellido</label>
+                    <input type="text" name="apellido" id="apellidoReg">
+                </fieldset>
+                <fieldset data-role="fieldcontain">
+                    <label class="registerInput" for="passwordReg">Contraseña</label>
+                    <input type="password" name="password" id="passwordReg">
+                </fieldset>
+                <fieldset data-role="fieldcontain">
+                    <label class="registerInput" for="emailReg">Email</label>
+                    <input type="email" name="email" id="emailReg">
+                </fieldset>
+                <fieldset class="ui-grid-a sideByside">
+                    <div class="ui-block-a">
+                        <label class="registerInput" for="documentoReg">Documento</label>
+                        <input type="text" name="documento" id="documentoReg">
+                    </div>
+                    <div class="ui-block-b">
+                        <label class="registerInput" for="telefonoReg">Teléfono</label>
+                        <input type="text" name="telefono" id="telefonoReg">
+                    </div>
+                </fieldset>
+                <div class="button">
+                    <a href="#" class="ui-btn ui-btn-b ui-corner-all" onclick="registrar()">Crear cuenta</a>
+                </div>
+            </form>
+        <div data-role="popup" id="errorPopupRegister" class="errorPopup" data-overlay-theme="a" data-theme="a" data-dismissible="true" data-transition="slideup">
+                <div data-role="header" data-theme="a">
+                    <h1>¡Upsss!</h1>
+                </div>
+                <div role="main" class="ui-content popup-text">
+                    <h3 class="ui-title">Ya existe un usuario con ese email o teléfono</h3>
+                        <p class="ui-subtitle">¡Vuelve a intentarlo!</p>
+                    <a href="#" class="ui-btn ui-btn-b ui-corner-all ui-ok-button" data-rel="back" data-transition="slideup">OK</a>
+                </div>
+            </div>
+        </div>
+            <div data-role="footer" data-position="fixed">
+                <h4></h4>
+            </div>
+        </div>
+
+    <div data-role="page" id="main-menu">
+        <div data-role="header">
+            <img class="appLogo" src="jq145/images/heartbeat.png" alt="logo"> 
+        </div>
+
+        <div role="main" class="ui-content">
+            <ul data-role="listview">
+                <li><a href="#info-doc" data-transition="slide" class="main-menu-item">Buscar profesionales</a></li>
+                <li><a href="#" data-transition="slide" class="main-menu-item">Mis consultas</a></li>
+                <li><a href="#centro-med" data-transition="slide" class="main-menu-item">Centros médicos</a></li>
+                <li><a href="#" data-transition="slide" class="main-menu-item">Favoritos</a></li>
+                <li><a href="#start-menu" data-transition="slide" data-direction="reverse" class="main-menu-item">Cerrar sesión</a></li>
+            </ul>
+        </div>
+        <div data-role="footer" data-position="fixed">
+            <h4></h4>
+        </div>
+    </div>
+
+    <div data-role="page" id="info-doc">
+        <div data-role="header">
+            <a href="#main-menu" data-rel="back" data-transition="slide" data-direction="reverse" data-icon="arrow-left"
+            class="ui-link ui-btn ui-icon-arrow-left ui-btn-icon-left ui-shadow ui-corner-all"></a>
+            <img class="appLogo" src="jq145/images/heartbeat.png" alt="logo"> 
+        </div>
+
+        <div role="main" class="ui-content doclist">
+            <form class="ui-filterable">
+                <input id="filterBasic-input" data-type="search" placeholder="Buscar..">
+            </form>
+
+            <ul id="listview" data-role="listview" data-inset="true" data-filter="true" data-input="#filterBasic-input">
+            </ul>
+        </div>
+        <div data-role="footer" data-position="fixed">
+            <h4></h4>
+        </div>
+    </div>
+
+    <div data-role="page" id="info-doc-detalle">
+            <div data-role="header">
+                <a href="#info-doc" data-rel="back" data-transition="slide" data-direction="reverse" data-icon="arrow-left"
+                class="ui-link ui-btn ui-icon-arrow-left ui-btn-icon-left ui-shadow ui-corner-all"></a>
+                <img class="appLogo" src="jq145/images/heartbeat.png" alt="logo"> 
+            </div>
+
+            <div role="main" class="ui-content doclist">
+                <div class="card">
+                   <!-- <img src="jq145/images/doc5.jpg" alt="Imagen doctor en detalle">
+                    <div class="container">
+                        <h3 class="card-name"><b>Dra. Claudia Ramos</b></h3> 
+                        <h5 class="card-title">Doctora en Medicina</h5>
+                        <h5 class="card-prof">Odontología</h5> 
+                        <p class="card-clin">Clínica San Nicolás</p> 
+                        <h3 class="card-punt">83%</h3> 
+                    </div>-->
+                </div>
+            </div>     
+            <div data-role="footer" data-position="fixed">
+                <div data-role="navbar">
+                    <ul>
+                        <li><a href="#doc-consulta" data-role="button" data-icon="calendar" data-transition="slideup"
+                        class="doclist-option inlineIcon"><span class="doclist-option-text">Agendar</span></a></li>
+                        <li><a href="index.html" data-role="button" data-icon="heart" data-transition="slideup"
+                        class="doclist-option inlineIcon"><span class="doclist-option-text">Favorito</span></a></li>
+                        <li><a href="index.html" data-role="button" data-icon="star" data-transition="slideup"
+                        class="doclist-option inlineIcon"><span class="doclist-option-text">Calificar</span></a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div data-role="page" id="doc-consulta">
+            <div data-role="header">
+                <a href="#info-doc-detalle" data-rel="back" data-transition="slideup" data-direction="reverse" data-icon="arrow-left"
+                class="ui-link ui-btn ui-icon-arrow-left ui-btn-icon-left ui-shadow ui-corner-all"></a>
+                <img class="appLogo" src="jq145/images/heartbeat.png" alt="logo"> 
+            </div>
+
+            <div role="main" class="ui-content">
+                <form id="formRes" autocomplete="off">
+                    <fieldset data-role="fieldcontain">
+                    <label class="ReservaInput" for="fechaRes">Fecha</label>
+                    <input type="text" name="fecha" id="fechaRes" data-role="datebox" data-options='{"mode":"calbox", "useLang":"es",
+                    "overrideDateFormat": "%d/%m/%Y" }'>
+                    </fieldset>
+                    <fieldset data-role="fieldcontain">
+                    <label class="ReservaInput" for="horaRes">Hora</label>
+                    <input type="text" name="hora" id="horaRes" data-role="datebox" data-options='{"mode":"timebox"}'>
+                    </fieldset>              
+                    <fieldset data-role="fieldcontain">
+                    <label class="ReservaInput" for="doctorRes">Doctor</label>
+                    <input type="text" name="doctor" id="doctorRes">
+                    </fieldset>
+                    <fieldset data-role="fieldcontain">
+                    <label class="ReservaInput" for="centroRes">Centro médico</label>
+                    <input type="text" name="centro" id="centroRes">
+                    </fieldset>
+                <div class="button">
+                    <a href="sign-in.html" class="ui-btn ui-btn-b ui-corner-all">Reservar</a>
+                </div>
+            </form>
+            </div>
+        <div data-role="footer" data-position="fixed">
+            <h4></h4>
+        </div>
+    </div>
+
+        <div data-role="page" id="centro-med">
+            <div data-role="header">
+                <a href="#main-menu" data-rel="back" data-transition="slide" data-direction="reverse" data-icon="arrow-left"
+                class="ui-link ui-btn ui-icon-arrow-left ui-btn-icon-left ui-shadow ui-corner-all"></a>
+                <img class="appLogo" src="jq145/images/heartbeat.png" alt="logo"> 
+            </div>
+
+            <div role="main" class="ui-content">
+            <ul data-role="listview" data-inset="true">
+                <li data-role="list-divider">Centro médico <span class="ui-li-count">1</span></li>
+                <li class="centroMedico">
+                    <h2 class="tituloCentroMedico">Clínica San Nicolás</h2><p class="ui-li-aside"><div id="diaActual"></div>
+                    <p class="direccionCentroMedico"><strong> Bulevar España 2422</strong></p>
+                    <p>11300, Montevideo</p>
+                </li>
+            </ul>
+            </div>  
+        <div data-role="footer" data-position="fixed">
+            <h4></h4>
+        </div>
+    </div>
+</body>
+</html>
