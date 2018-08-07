@@ -177,6 +177,10 @@ fieldset.ui-field-contain {
     padding: 5px 0px !important;
 }
 
+.ui-header {
+    border-bottom: 0px;
+}
+
 .card {
     border: .55px solid rgb(235, 235, 235);
     background-color: rgb(252, 252, 252);
@@ -189,7 +193,6 @@ fieldset.ui-field-contain {
 }
 
 .card-img {
-    border-radius: 5px 5px 0 0;
     width: 100%;
     height: 100%;
 }
@@ -200,7 +203,7 @@ fieldset.ui-field-contain {
 
 .card-name {
     margin: 5px 0px;
-    color: rgb(87, 87, 87);
+    color: rgb(112, 112, 112);
     font-size: 1.05em;
 }
 
@@ -230,7 +233,7 @@ fieldset.ui-field-contain {
     margin: 0px;
     padding-bottom: 10px;
     text-align: right;
-    color: rgb(104, 104, 104);
+    color: rgb(90, 90, 90);
 }
 
 .ui-btn.ui-btn-b.ui-corner-all.card-clin {
@@ -295,7 +298,7 @@ fieldset.ui-field-contain {
     padding-left: 0px;
 }
 
-.errorPopup {
+.Popup {
     width: 100%; 
     box-shadow: 0 0 12px rgba(189, 189, 189, 0.6);
     background-color: rgb(250, 250, 250);
@@ -326,6 +329,18 @@ fieldset.ui-field-contain {
     color: rgb(126, 126, 126);
 }
 
+.ui-subtitle-msg {
+    padding-top: 5px;
+}
+
 .ui-ok-button {
-    margin-bottom: 15px;
+    margin: 15px 0px !important;
+}
+
+.ui-input-text.ui-body-inherit.ui-corner-all.ui-shadow-inset.ui-input-has-clear {
+    border-top-right-radius: 5px !important;
+}
+
+.ui-input-text.ui-body-inherit.ui-corner-all.ui-shadow-inset.ui-input-has-clear {
+    padding-right: 0px;
 }

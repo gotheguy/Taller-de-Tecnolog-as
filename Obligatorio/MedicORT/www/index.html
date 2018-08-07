@@ -34,8 +34,8 @@
                 error: function(data){
                     $.mobile.loading("hide");
                     if(!data.resultado_login) {
-                        $('#errorPopupLogin').popup();
-                        $("#errorPopupLogin").popup("open");
+                        $('#PopupLogin').popup();
+                        $("#PopupLogin").popup("open");
                     }
                 }
 			});
@@ -60,8 +60,8 @@
                     $.mobile.loading("hide");
                     if(jqXHR.status = 500) {
                         if(data.retorno = "ERROR") {
-                            $('#errorPopupRegister').popup();
-                            $("#errorPopupRegister").popup("open"); 
+                            $('#PopupRegister').popup();
+                            $("#PopupRegister").popup("open"); 
                         }
                     }
                 }
@@ -119,6 +119,7 @@
                             data.profesional.especialidad + '</h5><h3 class="card-punt">' + (Math.round(data.profesional.puntuacion * 100) / 100)  + 
                             '</h3><a class="ui-btn ui-btn-b ui-corner-all card-clin">' + data.profesional.centroMedico.nombre + '</a></div>');
                         $('.card').append(items.join(''));
+                        getDatosProfesional(nombreDoc,apellidoDoc)
                     }
                 }
             });
@@ -166,16 +167,16 @@
                 <a href="" class="ui-btn ui-btn-b ui-corner-all" onclick="login()">Ingresar</a>
             </div>
         </form>
-        <div data-role="popup" id="errorPopupLogin" class="errorPopup" data-overlay-theme="a" data-theme="a" data-dismissible="true" data-transition="slideup">
-                <div data-role="header" data-theme="a">
-                    <h1>¡Upsss!</h1>
-                </div>
-                <div role="main" class="ui-content popup-text">
-                    <h3 class="ui-title">Tu email y/o contraseña son incorrectos</h3>
-                        <p class="ui-subtitle">¡Vuelve a intentarlo!</p>
-                    <a href="#" class="ui-btn ui-btn-b ui-corner-all ui-ok-button" data-rel="back" data-transition="slideup">OK</a>
-                </div>
-            </div>
+        <div data-role="popup" id="PopupLogin" class="Popup" data-overlay-theme="a" data-theme="a" data-dismissible="true" data-transition="slideup">
+            <div data-role="header" data-theme="a">
+                <h1>¡Upsss!</h1>
+            </div>
+            <div role="main" class="ui-content popup-text">
+                <h3 class="ui-title">Tu email y/o contraseña son incorrectos</h3>
+                    <p class="ui-subtitle">¡Vuelve a intentarlo!</p>
+                <a href="#" class="ui-btn ui-btn-b ui-corner-all ui-ok-button" data-rel="back" data-transition="slideup">OK</a>
+            </div>
+        </div>
         </div>
         <div data-role="footer" data-position="fixed">
             <h4></h4>
@@ -221,7 +222,7 @@
                     <a href="#" class="ui-btn ui-btn-b ui-corner-all" onclick="registrar()">Crear cuenta</a>
                 </div>
             </form>
-        <div data-role="popup" id="errorPopupRegister" class="errorPopup" data-overlay-theme="a" data-theme="a" data-dismissible="true" data-transition="slideup">
+        <div data-role="popup" id="PopupRegister" class="Popup" data-overlay-theme="a" data-theme="a" data-dismissible="true" data-transition="slideup">
                 <div data-role="header" data-theme="a">
                     <h1>¡Upsss!</h1>
                 </div>
@@ -294,9 +295,19 @@
                         class="doclist-option inlineIcon"><span class="doclist-option-text">Agendar</span></a></li>
                         <li><a href="index.html" data-role="button" data-icon="heart" data-transition="slideup"
                         class="doclist-option inlineIcon"><span class="doclist-option-text">Favorito</span></a></li>
-                        <li><a href="index.html" data-role="button" data-icon="star" data-transition="slideup"
+                        <li><a onclick="$('#PopupPuntaje').popup();$('#PopupPuntaje').popup('open');" data-role="button" data-icon="star" data-transition="slideup"
                         class="doclist-option inlineIcon"><span class="doclist-option-text">Calificar</span></a></li>
                     </ul>
+                </div>
+                <div data-role="popup" id="PopupPuntaje" class="Popup" data-overlay-theme="a" data-theme="a" data-dismissible="true" data-transition="slideup">
+                    <div data-role="header" data-theme="a">
+                        <h1>¡Yeyyy!</h1>
+                    </div>
+                    <div role="main" class="ui-content popup-text">
+                        <h3 class="ui-title">Por favor, ingresa calificación para tu doctor</h3>
+                        <input type="number" name="doctorcal" id="doctorCal">
+                        <a href="#" class="ui-btn ui-btn-b ui-corner-all ui-ok-button" data-rel="back" data-transition="slideup">OK</a>
+                    </div>
                 </div>
             </div>
         </div>
