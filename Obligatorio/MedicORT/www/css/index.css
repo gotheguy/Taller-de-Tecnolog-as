@@ -127,7 +127,8 @@ h2 {
     font-weight: 300;
 }
 
-.ui-link.ui-btn.ui-icon-arrow-left.ui-btn-icon-left.ui-shadow.ui-corner-all {
+.ui-link.ui-btn.ui-icon-arrow-left.ui-btn-icon-left.ui-shadow.ui-corner-all,.ui-link.ui-btn.ui-icon-arrow-right.ui-btn-icon-right.ui-shadow.ui-corner-all,
+.ui-link.ui-btn.ui-icon-delete.ui-btn-icon-right.ui-shadow.ui-corner-all {
     background-color: rgb(201, 201, 201);
     margin-top: 5px;
     margin-left: 10px;
@@ -139,17 +140,14 @@ h2 {
     background-color: rgb(201, 201, 201);
 }
 
-.ui-link.ui-btn.ui-icon-arrow-right.ui-btn-icon-right.ui-shadow.ui-corner-all  {
-    background-color: rgb(201, 201, 201);
-    margin-top: 5px;
-    margin-right: 10px;
-    padding: 15px;
-    border-radius: 100%;
-}
-
 .ui-link.ui-btn.ui-icon-arrow-right.ui-btn-icon-right.ui-shadow.ui-corner-all::after {
     background-color: rgb(201, 201, 201);
     right: .22em;
+}
+
+.ui-link.ui-btn.ui-icon-delete.ui-btn-icon-right.ui-shadow.ui-corner-all::after {
+    background-color: rgb(201, 201, 201); 
+    right: .30em;
 }
 
 .appLogo {

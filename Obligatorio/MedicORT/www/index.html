@@ -18,6 +18,30 @@
             });
         });
 
+        function getSession() {
+            return sessionStorage.getItem("session");
+        }
+
+        function setSession(user) {
+            sessionStorage.clear();
+            sessionStorage.setItem("session", user);
+            return session = getSession();
+        }
+
+        function getDoctor() {
+            var nom = sessionStorage.getItem("doctorNombre");
+            var ape = sessionStorage.getItem("doctorApellido");
+            var doc = {nom, ape};
+            return doc;
+        }
+
+         function setDoctor(nombreDoc,apellidoDoc) {
+            sessionStorage.clear();
+            sessionStorage.setItem("doctorNombre", nombreDoc);
+            sessionStorage.setItem("doctorApellido", apellidoDoc);
+            return doctor = getDoctor();
+        }       
+
         function login(){
 			$.mobile.loading("show");
 			$.ajax({
@@ -28,7 +52,8 @@
 				success: function(data){
 					$.mobile.loading("hide");
                     if(data.resultado_login) {
-                        window.location.replace("#main-menu");
+                       setSession(data.id_usuario);
+                       window.location.replace("#main-menu");
                     }
 				},
                 error: function(data){
@@ -41,7 +66,6 @@
 			});
         }
         
-        
         function registrar() {
 			$.mobile.loading("show");
 			$.ajax({
@@ -53,6 +77,7 @@
 				success: function(data){
 					$.mobile.loading("hide");
                     if(data.retorno = "OK") {
+                        setSession(data.id_usuario);
                         window.location.replace("#main-menu");
                     }
 				},
@@ -68,10 +93,6 @@
 			});
 		}
 
-        $(document).on("pagebeforecreate","#info-doc",function(){
-            getProfesionales(); 
-        });
-
 		function getProfesionales(){
 			$.ajax({
 				type: "GET",
@@ -82,8 +103,9 @@
                     var items = []; 
                     $.each(data.profesionales, function(i,item) {
                         var aux = data.profesionales[i];
-                        items.push('<li><a href="#info-doc-detalle" data-transition="slide" class="doclist-item">' +
-                        '<img src="img/images/doc5.jpg" alt="Imagen doctor"><h3 class="doclist-name">Dr. ' +
+                            $('#listview').empty();
+                            items.push('<li><a href="#info-doc-detalle" data-transition="slide" class="doclist-item">' +
+                            '<img src="img/images/doc5.jpg" alt="Imagen doctor"><h3 class="doclist-name">Dr. ' +
                             aux.nombre + ' ' + aux.apellido + '</h3><p class="doclist-specialty">' + 
                             aux.especialidad + '</p></a></li>');
                         });
@@ -93,7 +115,8 @@
                         $.each(data.profesionales, function(i,item) {
                             var aux = data.profesionales[i];
                             $('li').click(function(){
-                                getDetalleProfesional(aux.nombre,aux.apellido);
+                                setDoctor(aux.nombre,aux.apellido);
+                                getDetalleProfesional();
                             });
                         });
                     }
@@ -101,10 +124,11 @@
             });
         }
 
-		function getDetalleProfesional(nombreDoc,apellidoDoc){
+		function getDetalleProfesional(){
             $.mobile.loading("show");
+            var doctor = getDoctor();
 			$.ajax({
-                data: {nombre: nombreDoc, apellido: apellidoDoc},
+                data: {nombre: doctor.nom, apellido: doctor.ape},
 				type: "GET",
 				dataType: "json",
 				url: "http://medicort.tribus.com.uy/getDetalleProfesional",
@@ -119,10 +143,33 @@
                             data.profesional.especialidad + '</h5><h3 class="card-punt">' + (Math.round(data.profesional.puntuacion * 100) / 100)  + 
                             '</h3><a class="ui-btn ui-btn-b ui-corner-all card-clin">' + data.profesional.centroMedico.nombre + '</a></div>');
                         $('.card').append(items.join(''));
-                        getDatosProfesional(nombreDoc,apellidoDoc)
                     }
                 }
             });
+        }
+
+        function asignarPuntajeAProfesional() {
+			$.mobile.loading("show");
+            var doctor = getDoctor();
+			$.ajax({
+                data: {nombre: doctor.nom, apellido: doctor.ape, puntaje: $('#doctorCal').val()},
+				type: "POST",
+				dataType: "json",
+				url: "http://medicort.tribus.com.uy/asignarPuntajeAProfesional",
+				success: function(data){
+					$.mobile.loading("hide");
+                    if(data.retorno = "OK") {
+                        getDetalleProfesional();
+                    }
+				},
+                error: function(data,jqXHR) {
+                    $.mobile.loading("hide");
+                    if(jqXHR.status = 500) {
+                        if(data.retorno = "ERROR") {
+                        }
+                    }
+                }
+			});
         }
     </script>
 </head>
@@ -245,7 +292,7 @@
 
         <div role="main" class="ui-content">
             <ul data-role="listview">
-                <li><a href="#info-doc" data-transition="slide" class="main-menu-item">Buscar profesionales</a></li>
+                <li><a href="#info-doc" data-transition="slide" class="main-menu-item" onclick="getProfesionales()">Buscar profesionales</a></li>
                 <li><a href="#" data-transition="slide" class="main-menu-item">Mis consultas</a></li>
                 <li><a href="#centro-med" data-transition="slide" class="main-menu-item">Centros médicos</a></li>
                 <li><a href="#" data-transition="slide" class="main-menu-item">Favoritos</a></li>
@@ -295,18 +342,20 @@
                         class="doclist-option inlineIcon"><span class="doclist-option-text">Agendar</span></a></li>
                         <li><a href="index.html" data-role="button" data-icon="heart" data-transition="slideup"
                         class="doclist-option inlineIcon"><span class="doclist-option-text">Favorito</span></a></li>
-                        <li><a onclick="$('#PopupPuntaje').popup();$('#PopupPuntaje').popup('open');" data-role="button" data-icon="star" data-transition="slideup"
+                        <li><a onclick="$('#PopupPuntaje').popup();$('#PopupPuntaje').popup('open');" id="puntajeOption" data-role="button" data-icon="star" data-transition="slideup"
                         class="doclist-option inlineIcon"><span class="doclist-option-text">Calificar</span></a></li>
                     </ul>
                 </div>
                 <div data-role="popup" id="PopupPuntaje" class="Popup" data-overlay-theme="a" data-theme="a" data-dismissible="true" data-transition="slideup">
                     <div data-role="header" data-theme="a">
+                        <a href="#" class="ui-link ui-btn ui-icon-delete ui-btn-icon-right ui-shadow ui-corner-all" onclick="$('#PopupPuntaje').popup('close');"></a>
                         <h1>¡Yeyyy!</h1>
                     </div>
                     <div role="main" class="ui-content popup-text">
                         <h3 class="ui-title">Por favor, ingresa calificación para tu doctor</h3>
                         <input type="number" name="doctorcal" id="doctorCal">
-                        <a href="#" class="ui-btn ui-btn-b ui-corner-all ui-ok-button" data-rel="back" data-transition="slideup">OK</a>
+                        <a href="#" id="ui-ok-button-puntaje" class="ui-btn ui-btn-b ui-corner-all ui-ok-button" data-rel="back" data-transition="slideup"
+                        onclick="asignarPuntajeAProfesional()">OK</a>
                     </div>
                 </div>
             </div>
