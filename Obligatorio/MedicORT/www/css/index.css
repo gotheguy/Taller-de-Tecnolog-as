@@ -10,26 +10,22 @@
     background: rgb(255, 255, 255);
 }
 
-#diaActual {
-    font-weight: 100;
-    font-size: 0.9em;
-    margin-top: 8px;
-    text-align: right;
-}
-
 .ui-body-a, .ui-page-theme-a .ui-body-inherit, 
 html .ui-bar-a .ui-body-inherit, html .ui-body-a .ui-body-inherit, 
 html body .ui-group-theme-a .ui-body-inherit, html .ui-panel-page-container-a {
     background: rgb(248, 248, 248)
 }
 
-.tituloCentroMedico {
-    float: left;
+h2.tituloCentroMedico {
+    color: rgb(107, 107, 107);
+    font-weight: 100;
+    font-size: 0.85em !important;
+    text-overflow: ellipsis;
 }
 
 .direccionCentroMedico {
-    margin-bottom: 0px;
-    clear: both;
+    color: rgb(107, 107, 107);
+    font-size: 0.80em !important;
 }
 
 .ui-input-search.ui-body-inherit.ui-corner-all.ui-shadow-inset.ui-input-has-clear {
@@ -48,23 +44,27 @@ ul li a img {
     background-color: white;
 }
 
-.doclist-name {
+.doclist-name, .medlist-name {
     color: rgb(107, 107, 107);
     font-weight: 100;
     font-size: 0.85em !important;
     text-overflow: ellipsis;
 }
 
-.doclist-specialty {
+.doclist-specialty, .medlist-adress {
     color: rgb(107, 107, 107);
     font-size: 0.80em !important;
 }
 
-.doclist-item {
+.doclist-item, .medlist-item {
     height: 60px;
 }
 
-.ui-content.doclist.ui-listview.ui-listview-inset.ui-corner-all.ui-shadow {
+.ui-listview.ui-listview-inset.ui-corner-all.ui-shadow {
+    margin-top: 0px !important;
+}
+
+.ui-content.doclist.ui-listview.ui-listview-inset.ui-corner-all.ui-shadow, .ui-content.medlist.ui-listview.ui-listview-inset.ui-corner-all.ui-shadow {
     padding: 16px 0px;
 }
 
@@ -72,15 +72,25 @@ ul li a img {
     margin: 16px;
 }
 
-.ui-content.doclist {
+.ui-content.doclist, .ui-content.medlist {
     padding: 0px;
 }
 
-.doclist-item.ui-btn.ui-btn-icon-right.ui-icon-carat-r {
+.doclist-item.ui-btn.ui-btn-icon-right.ui-icon-carat-r, .medlist-item.ui-btn.ui-btn-icon-right.ui-icon-carat-r {
     padding: 11.2px 50px 0px 80px;
 }
 
-.doclist-item.ui-btn.ui-btn-icon-right.ui-icon-carat-r, .main-menu-item.ui-btn.ui-btn-icon-right.ui-icon-carat-r {
+.medlist-item.ui-btn.ui-btn-icon-right.ui-icon-carat-r {
+    padding: 11.2px 70px 0px 30px; 
+}
+
+.ui-page-theme-a .ui-btn, html .ui-bar-a .ui-btn, html .ui-body-a .ui-btn, html body .ui-group-theme-a .ui-btn, html head+body .ui-btn.ui-btn-a, .ui-page-theme-a .ui-btn:visited, html .ui-bar-a .ui-btn:visited, html .ui-body-a .ui-btn:visited, html body .ui-group-theme-a .ui-btn:visited, html head+body .ui-btn.ui-btn-a:visited {
+    background-color: rgb(253, 253, 253);
+    border-color: rgb(230, 229, 229);
+    box-shadow: none;
+}
+
+.doclist-item.ui-btn.ui-btn-icon-right.ui-icon-carat-r, .main-menu-item.ui-btn.ui-btn-icon-right.ui-icon-carat-r, .medlist-item.ui-btn.ui-btn-icon-right.ui-icon-carat-r {
     background-color: rgb(253, 253, 253);
     border-color: rgb(230, 229, 229);
     box-shadow: none;
@@ -93,7 +103,8 @@ ul li a img {
     font-weight: 600;
 }
 
-.doclist-item.ui-btn.ui-btn-icon-right.ui-icon-carat-r::after, .main-menu-item.ui-btn.ui-btn-icon-right.ui-icon-carat-r::after {
+.doclist-item.ui-btn.ui-btn-icon-right.ui-icon-carat-r::after, .main-menu-item.ui-btn.ui-btn-icon-right.ui-icon-carat-r::after,
+.medlist-item.ui-btn.ui-btn-icon-right.ui-icon-carat-r::after {
     background-color: rgb(216, 216, 216);
     right: 1.5em;
 }

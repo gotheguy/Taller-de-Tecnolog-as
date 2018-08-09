@@ -28,18 +28,12 @@
             return session = getSession();
         }
 
-        function getDoctor() {
-            var nom = sessionStorage.getItem("doctorNombre");
-            var ape = sessionStorage.getItem("doctorApellido");
-            var doc = {nom, ape};
-            return doc;
+        function getDoctor(id) {
+            return sessionStorage.getItem(id);
         }
 
-         function setDoctor(nombreDoc,apellidoDoc) {
-            sessionStorage.clear();
-            sessionStorage.setItem("doctorNombre", nombreDoc);
-            sessionStorage.setItem("doctorApellido", apellidoDoc);
-            return doctor = getDoctor();
+         function setDoctor(id,nombreDoc,apellidoDoc) {
+            sessionStorage.setItem(id,nombreDoc + ' ' + apellidoDoc);
         }       
 
         function login(){
@@ -94,29 +88,35 @@
 		}
 
 		function getProfesionales(){
+            $.mobile.loading("show");
 			$.ajax({
 				type: "GET",
 				dataType: "json",
 				url: "http://medicort.tribus.com.uy/getProfesionales",
 				success: function(data){
+                    $.mobile.loading("hide");
                     if(data.retorno = "OK") {
                     var items = []; 
                     $.each(data.profesionales, function(i,item) {
                         var aux = data.profesionales[i];
-                            $('#listview').empty();
-                            items.push('<li><a href="#info-doc-detalle" data-transition="slide" class="doclist-item">' +
-                            '<img src="img/images/doc5.jpg" alt="Imagen doctor"><h3 class="doclist-name">Dr. ' +
+                            $('#listviewDoc').empty();
+                            items.push('<li class="info-doc-li"><a href="#info-doc-detalle" data-transition="slide" class="doclist-item">' +
+                            '<img src="img/images/doc5.jpg" alt="Imagen doctor"><h3 class="doclist-name">' +
                             aux.nombre + ' ' + aux.apellido + '</h3><p class="doclist-specialty">' + 
                             aux.especialidad + '</p></a></li>');
                         });
-                        $('#listview').append(items.join(''));
-                        $('#listview').listview().listview('refresh');
+                        $('#listviewDoc').append(items.join(''));
+                        $('#listviewDoc').listview().listview('refresh');
 
-                        $.each(data.profesionales, function(i,item) {
-                            var aux = data.profesionales[i];
+                            $.each(data.profesionales, function(i,item) {
                             $('li').click(function(){
-                                setDoctor(aux.nombre,aux.apellido);
-                                getDetalleProfesional();
+                                var aux = data.profesionales[i];          
+                                //setDoctor(aux.nombre,aux.apellido);
+                                //getDetalleProfesional();
+                                if($("li:contains('" + aux.nombre + ' ' + aux.apellido + "')")) {
+                                    alert("doctor guardado " + aux.nombre);
+                                }
+                                //alert("doctor guardado " + sessionStorage.getItem(1));
                             });
                         });
                     }
@@ -134,15 +134,19 @@
 				url: "http://medicort.tribus.com.uy/getDetalleProfesional",
 				success: function(data){
                     if(data.retorno = "OK") {
-                        var items = []; 
-                        $(".card").html("");
-                        $.mobile.loading("hide");
+                        var doctorActual = data.profesional.nombre + ' ' + data.profesional.apellido;
+                        var doctorGuardado = getDoctor().nom + ' ' + getDoctor().ape; 
+                        if(doctorActual == doctorGuardado) {
+                            var items = []; 
+                            $(".card").html("");
+                            $.mobile.loading("hide");
                             items.push('<img src="img/images/doc5.jpg" alt="Imagen doctor en detalle" class="card-img"><div class="container">' + 
-                            '<h3 class="card-name">Dr. ' + data.profesional.nombre + ' ' + data.profesional.apellido + 
+                            '<h3 class="card-name">' + data.profesional.nombre + ' ' + data.profesional.apellido + 
                             '</h3><h5 class="card-title">' + data.profesional.titulo + '</h5><h5 class="card-prof">' + 
                             data.profesional.especialidad + '</h5><h3 class="card-punt">' + (Math.round(data.profesional.puntuacion * 100) / 100)  + 
                             '</h3><a class="ui-btn ui-btn-b ui-corner-all card-clin">' + data.profesional.centroMedico.nombre + '</a></div>');
-                        $('.card').append(items.join(''));
+                            $('.card').append(items.join(''));
+                        }
                     }
                 }
             });
@@ -170,6 +174,31 @@
                     }
                 }
 			});
+        }
+
+		function getCentrosMedicos(){
+            $.mobile.loading("show");
+			$.ajax({
+				type: "GET",
+				dataType: "json",
+				url: "http://medicort.tribus.com.uy/getCentrosMedicos",
+				success: function(data){
+                    $.mobile.loading("hide");
+                    if(data.retorno = "OK") {
+                    var items = []; 
+                    $.each(data.centrosMedicos, function(i,item) {
+                        var aux = data.centrosMedicos[i];
+                            $('#listviewMed').empty();
+                            items.push('<li class="info-med-li"><a href="#info-med-detalle" data-transition="slide" class="medlist-item">' +
+                            '<h3 class="medlist-name">' + aux.nombre +
+                            '</h3><p class="ui-li-aside"><p class="medlist-adress">' + aux.direccion + 
+                            '</p></a></li>');
+                        });
+                        $('#listviewMed').append(items.join(''));
+                        $('#listviewMed').listview().listview('refresh');
+                    }
+                }
+            });
         }
     </script>
 </head>
@@ -294,7 +323,7 @@
             <ul data-role="listview">
                 <li><a href="#info-doc" data-transition="slide" class="main-menu-item" onclick="getProfesionales()">Buscar profesionales</a></li>
                 <li><a href="#" data-transition="slide" class="main-menu-item">Mis consultas</a></li>
-                <li><a href="#centro-med" data-transition="slide" class="main-menu-item">Centros médicos</a></li>
+                <li><a href="#centro-med" data-transition="slide" class="main-menu-item" onclick="getCentrosMedicos()">Centros médicos</a></li>
                 <li><a href="#" data-transition="slide" class="main-menu-item">Favoritos</a></li>
                 <li><a href="#start-menu" data-transition="slide" data-direction="reverse" class="main-menu-item">Cerrar sesión</a></li>
             </ul>
@@ -316,7 +345,7 @@
                 <input id="filterBasic-input" data-type="search" placeholder="Buscar..">
             </form>
 
-            <ul id="listview" data-role="listview" data-inset="true" data-filter="true" data-input="#filterBasic-input">
+            <ul id="listviewDoc" data-role="listview" data-inset="true" data-filter="true" data-input="#filterBasic-input">
             </ul>
         </div>
         <div data-role="footer" data-position="fixed">
@@ -404,14 +433,8 @@
                 <img class="appLogo" src="img/images/heartbeat.png" alt="logo"> 
             </div>
 
-            <div role="main" class="ui-content">
-            <ul data-role="listview" data-inset="true">
-                <li data-role="list-divider">Centro médico <span class="ui-li-count">1</span></li>
-                <li class="centroMedico">
-                    <h2 class="tituloCentroMedico">Clínica San Nicolás</h2><p class="ui-li-aside"><div id="diaActual"></div>
-                    <p class="direccionCentroMedico"><strong> Bulevar España 2422</strong></p>
-                    <p>11300, Montevideo</p>
-                </li>
+            <div role="main" class="ui-content medlist">
+            <ul id="listviewMed" data-role="listview" data-inset="true">
             </ul>
             </div>  
         <div data-role="footer" data-position="fixed">
