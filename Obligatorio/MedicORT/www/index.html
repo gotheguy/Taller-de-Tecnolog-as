@@ -22,10 +22,9 @@
             return sessionStorage.getItem("session");
         }
 
-        function setSession(user) {
+        function setSession(mailUser) {
             sessionStorage.clear();
-            sessionStorage.setItem("session", user);
-            return session = getSession();
+            sessionStorage.setItem("session", mailUser);
         }
 
         function getDoctor(id) {
@@ -36,22 +35,36 @@
             sessionStorage.setItem(id,nombreDoc + ' ' + apellidoDoc);
         }       
 
+        function loadingShow() {
+            var interval = setInterval(function(){
+                $.mobile.loading('show');
+                clearInterval(interval);
+            },1); 
+        }
+
+        function loadingHide() {
+            var interval = setInterval(function(){
+                $.mobile.loading('hide');
+                clearInterval(interval);
+            },1); 
+        }
+
         function login(){
-			$.mobile.loading("show");
+			loadingShow();
 			$.ajax({
 				data: {email: $('#usuarioLog').val(), password: $('#passwordLog').val()},
 				type: "GET",
 				dataType: "json",
 				url: "http://medicort.tribus.com.uy/login",
 				success: function(data){
-					$.mobile.loading("hide");
+					loadingHide();
                     if(data.resultado_login) {
-                       setSession(data.id_usuario);
+                       setSession(data.email);
                        window.location.replace("#main-menu");
                     }
 				},
                 error: function(data){
-                    $.mobile.loading("hide");
+                    loadingHide();
                     if(!data.resultado_login) {
                         $('#PopupLogin').popup();
                         $("#PopupLogin").popup("open");
@@ -61,7 +74,7 @@
         }
         
         function registrar() {
-			$.mobile.loading("show");
+			loadingShow();
 			$.ajax({
                 data: {email: $('#emailReg').val(), password: $('#passwordReg').val(), nombre: $('#nombreReg').val(), apellido: $('#apellidoReg').val(),
                        documento: $('#documentoReg').val(), telefono: $('#telefonoReg').val()},
@@ -69,14 +82,14 @@
 				dataType: "json",
 				url: "http://medicort.tribus.com.uy/registrar",
 				success: function(data){
-					$.mobile.loading("hide");
+					loadingHide();
                     if(data.retorno = "OK") {
-                        setSession(data.id_usuario);
+                        setSession(data.email);
                         window.location.replace("#main-menu");
                     }
 				},
                 error: function(data,jqXHR) {
-                    $.mobile.loading("hide");
+                    loadingHide();
                     if(jqXHR.status = 500) {
                         if(data.retorno = "ERROR") {
                             $('#PopupRegister').popup();
@@ -88,86 +101,124 @@
 		}
 
 		function getProfesionales(){
-            $.mobile.loading("show");
+            loadingShow();
 			$.ajax({
 				type: "GET",
 				dataType: "json",
 				url: "http://medicort.tribus.com.uy/getProfesionales",
 				success: function(data){
-                    $.mobile.loading("hide");
+                    loadingHide();
                     if(data.retorno = "OK") {
                     var items = []; 
                     $.each(data.profesionales, function(i,item) {
                         var aux = data.profesionales[i];
                             $('#listviewDoc').empty();
-                            items.push('<li class="info-doc-li"><a href="#info-doc-detalle" data-transition="slide" class="doclist-item">' +
-                            '<img src="img/images/doc5.jpg" alt="Imagen doctor"><h3 class="doclist-name">' +
+                            setDoctor(aux.id,aux.nombre,aux.apellido);
+                            items.push('<li id="' + aux.id + '" class="info-doc-li"><a href="#info-doc-detalle" data-transition="slide" class="doclist-item">' +
+                            '<img src="' + aux.foto + '" alt="Imagen doctor"><h3 class="doclist-name">' +
                             aux.nombre + ' ' + aux.apellido + '</h3><p class="doclist-specialty">' + 
                             aux.especialidad + '</p></a></li>');
                         });
                         $('#listviewDoc').append(items.join(''));
                         $('#listviewDoc').listview().listview('refresh');
 
-                            $.each(data.profesionales, function(i,item) {
-                            $('li').click(function(){
-                                var aux = data.profesionales[i];          
-                                //setDoctor(aux.nombre,aux.apellido);
-                                //getDetalleProfesional();
-                                if($("li:contains('" + aux.nombre + ' ' + aux.apellido + "')")) {
-                                    alert("doctor guardado " + aux.nombre);
-                                }
-                                //alert("doctor guardado " + sessionStorage.getItem(1));
-                            });
+                        $('#listviewDoc li').click(function(){
+                            getDetalleProfesional(this.id);
                         });
                     }
                 }
             });
         }
 
-		function getDetalleProfesional(){
-            $.mobile.loading("show");
-            var doctor = getDoctor();
+		function getDetalleProfesional(idDoc){
+            loadingShow();
+            var doctor = splitDoctor(idDoc);
 			$.ajax({
-                data: {nombre: doctor.nom, apellido: doctor.ape},
+                data: {nombre: doctor[0], apellido: doctor[1]},
 				type: "GET",
 				dataType: "json",
 				url: "http://medicort.tribus.com.uy/getDetalleProfesional",
 				success: function(data){
                     if(data.retorno = "OK") {
-                        var doctorActual = data.profesional.nombre + ' ' + data.profesional.apellido;
-                        var doctorGuardado = getDoctor().nom + ' ' + getDoctor().ape; 
-                        if(doctorActual == doctorGuardado) {
-                            var items = []; 
-                            $(".card").html("");
-                            $.mobile.loading("hide");
-                            items.push('<img src="img/images/doc5.jpg" alt="Imagen doctor en detalle" class="card-img"><div class="container">' + 
-                            '<h3 class="card-name">' + data.profesional.nombre + ' ' + data.profesional.apellido + 
-                            '</h3><h5 class="card-title">' + data.profesional.titulo + '</h5><h5 class="card-prof">' + 
-                            data.profesional.especialidad + '</h5><h3 class="card-punt">' + (Math.round(data.profesional.puntuacion * 100) / 100)  + 
-                            '</h3><a class="ui-btn ui-btn-b ui-corner-all card-clin">' + data.profesional.centroMedico.nombre + '</a></div>');
-                            $('.card').append(items.join(''));
+                        var items = []; 
+                        $(".card").html("");
+                        loadingHide();
+                        items.push('<img src="' + data.profesional.foto + '" alt="Imagen doctor en detalle" class="card-img"><div class="container">' + 
+                        '<h3 class="card-name">' + data.profesional.nombre + ' ' + data.profesional.apellido + 
+                        '</h3><h5 class="card-title">' + data.profesional.titulo + '</h5><h5 class="card-prof">' + 
+                        data.profesional.especialidad + '</h5><h3 class="card-punt">' + (Math.round(data.profesional.puntuacion * 100) / 100)  + 
+                        '</h3><a class="ui-btn ui-btn-b ui-corner-all card-clin">' + data.profesional.centroMedico.nombre + '</a></div>');
+                        $('.card').append(items.join(''));
+                            $("#reservar-consulta").click(function() {
+                                 //fijarConsultaMedica(data.profesional.id,getSession(),data.profesional.nombre,data.profesional.apellido,data.profesional.centroMedico.nombre);
+                            });
+
+                        $("#calificar-consulta").click(function() {
+                            $('#PopupPuntaje').popup();
+                            $('#PopupPuntaje').popup('open');
+
+                            $("#ui-ok-button-puntaje").click(function() {
+                                asignarPuntajeAProfesional(data.profesional.nombre,data.profesional.apellido);
+                            });  
+                        });
+                    }
+                },
+                error: function(data,jqXHR) {
+                    loadingHide();
+                    if(jqXHR.status = 500) {
+                        if(data.retorno = "ERROR") {
                         }
                     }
                 }
             });
         }
 
-        function asignarPuntajeAProfesional() {
-			$.mobile.loading("show");
-            var doctor = getDoctor();
+        function splitDoctor(id) {
+            var doctor = getDoctor(id);
+            var split = doctor.split(" ");
+            return split;
+        }
+
+        function fijarConsultaMedica(idDoc,emailUser,nombreDoc,apellidoDoc,nombreMed) {
+			loadingShow();
+            var fecha = $('#fechaRes').val() + ' ' + $('#horaRes').val();
 			$.ajax({
-                data: {nombre: doctor.nom, apellido: doctor.ape, puntaje: $('#doctorCal').val()},
+                data: {email: emailUser, fechaHora: fecha, nombreProfesional: nombreDoc, apellidoProfesional: apellidoDoc, nombreCentroMedico: nombreMed},
+				type: "POST",
+				dataType: "json",
+				url: "http://medicort.tribus.com.uy/fijarConsultaMedica",
+				success: function(data){
+                    loadingHide();
+                    if(data.retorno = "OK") {
+                            alert("Gracias " + nombreDoc + ' ' + apellidoDoc);
+                    }
+				},
+                error: function(data,jqXHR) {
+                    loadingHide();
+                    if(jqXHR.status = 500) {
+                        if(data.retorno = "ERROR") {
+                            alert("ERROR " + idDoc + emailUser + fecha + nombreDoc + apellidoDoc + nombreMed);
+                        }
+                    }
+                }
+			});
+        }   
+
+        function asignarPuntajeAProfesional(nombreDoc,apellidoDoc) {
+			loadingShow();
+			$.ajax({
+                data: {nombre: nombreDoc, apellido: apellidoDoc, puntaje: $('#doctorCal').val()},
 				type: "POST",
 				dataType: "json",
 				url: "http://medicort.tribus.com.uy/asignarPuntajeAProfesional",
 				success: function(data){
-					$.mobile.loading("hide");
+                    loadingHide();
                     if(data.retorno = "OK") {
-                        getDetalleProfesional();
+                        $('.card-punt').text((Math.round(data.nuevoPuntaje * 100) / 100));
                     }
 				},
                 error: function(data,jqXHR) {
-                    $.mobile.loading("hide");
+                    loadingHide();
                     if(jqXHR.status = 500) {
                         if(data.retorno = "ERROR") {
                         }
@@ -177,13 +228,13 @@
         }
 
 		function getCentrosMedicos(){
-            $.mobile.loading("show");
+            loadingShow();
 			$.ajax({
 				type: "GET",
 				dataType: "json",
 				url: "http://medicort.tribus.com.uy/getCentrosMedicos",
 				success: function(data){
-                    $.mobile.loading("hide");
+                    loadingHide();
                     if(data.retorno = "OK") {
                     var items = []; 
                     $.each(data.centrosMedicos, function(i,item) {
@@ -316,7 +367,7 @@
 
     <div data-role="page" id="main-menu">
         <div data-role="header">
-            <img class="appLogo" src="img/images/heartbeat.png" alt="logo"> 
+            <h1 class="ui-title-page">Menú principal</h1>
         </div>
 
         <div role="main" class="ui-content">
@@ -337,15 +388,15 @@
         <div data-role="header">
             <a href="#main-menu" data-rel="back" data-transition="slide" data-direction="reverse" data-icon="arrow-left"
             class="ui-link ui-btn ui-icon-arrow-left ui-btn-icon-left ui-shadow ui-corner-all"></a>
-            <img class="appLogo" src="img/images/heartbeat.png" alt="logo"> 
+            <h1 class="ui-title-page">Profesionales</h1>
         </div>
 
         <div role="main" class="ui-content doclist">
             <form class="ui-filterable">
-                <input id="filterBasic-input" data-type="search" placeholder="Buscar..">
+                <input id="filter-doclist" data-type="search" placeholder="Buscar..">
             </form>
 
-            <ul id="listviewDoc" data-role="listview" data-inset="true" data-filter="true" data-input="#filterBasic-input">
+            <ul id="listviewDoc" data-role="listview" data-inset="true" data-filter="true" data-input="#filter-doclist">
             </ul>
         </div>
         <div data-role="footer" data-position="fixed">
@@ -357,7 +408,7 @@
             <div data-role="header">
                 <a href="#info-doc" data-rel="back" data-transition="slide" data-direction="reverse" data-icon="arrow-left"
                 class="ui-link ui-btn ui-icon-arrow-left ui-btn-icon-left ui-shadow ui-corner-all"></a>
-                <img class="appLogo" src="img/images/heartbeat.png" alt="logo"> 
+                <h1 class="ui-title-page">Detalle de profesional</h1>
             </div>
 
             <div role="main" class="ui-content doclist">
@@ -366,12 +417,12 @@
             </div>     
             <div data-role="footer" data-position="fixed">
                 <div data-role="navbar">
-                    <ul>
+                    <ul id="footerOptions">
                         <li><a href="#doc-consulta" data-role="button" data-icon="calendar" data-transition="slideup"
                         class="doclist-option inlineIcon"><span class="doclist-option-text">Agendar</span></a></li>
                         <li><a href="index.html" data-role="button" data-icon="heart" data-transition="slideup"
                         class="doclist-option inlineIcon"><span class="doclist-option-text">Favorito</span></a></li>
-                        <li><a onclick="$('#PopupPuntaje').popup();$('#PopupPuntaje').popup('open');" id="puntajeOption" data-role="button" data-icon="star" data-transition="slideup"
+                        <li><a id="calificar-consulta" data-role="button" data-icon="star" data-transition="slideup"
                         class="doclist-option inlineIcon"><span class="doclist-option-text">Calificar</span></a></li>
                     </ul>
                 </div>
@@ -394,7 +445,7 @@
             <div data-role="header">
                 <a href="#info-doc-detalle" data-rel="back" data-transition="slideup" data-direction="reverse" data-icon="arrow-left"
                 class="ui-link ui-btn ui-icon-arrow-left ui-btn-icon-left ui-shadow ui-corner-all"></a>
-                <img class="appLogo" src="img/images/heartbeat.png" alt="logo"> 
+                <h1 class="ui-title-page">Agendar consulta</h1>
             </div>
 
             <div role="main" class="ui-content">
@@ -408,16 +459,8 @@
                     <label class="ReservaInput" for="horaRes">Hora</label>
                     <input type="text" name="hora" id="horaRes" data-role="datebox" data-options='{"mode":"timebox"}'>
                     </fieldset>              
-                    <fieldset data-role="fieldcontain">
-                    <label class="ReservaInput" for="doctorRes">Doctor</label>
-                    <input type="text" name="doctor" id="doctorRes">
-                    </fieldset>
-                    <fieldset data-role="fieldcontain">
-                    <label class="ReservaInput" for="centroRes">Centro médico</label>
-                    <input type="text" name="centro" id="centroRes">
-                    </fieldset>
                 <div class="button">
-                    <a href="sign-in.html" class="ui-btn ui-btn-b ui-corner-all">Reservar</a>
+                    <a href="#" id="reservar-consulta" class="ui-btn ui-btn-b ui-corner-all">Reservar</a>
                 </div>
             </form>
             </div>
@@ -434,7 +477,10 @@
             </div>
 
             <div role="main" class="ui-content medlist">
-            <ul id="listviewMed" data-role="listview" data-inset="true">
+                <form class="ui-filterable">
+                    <input id="filter-medlist" data-type="search" placeholder="Buscar..">
+                </form>
+            <ul id="listviewMed" data-role="listview" data-inset="true" data-filter="true" data-input="#filter-medlist">
             </ul>
             </div>  
         <div data-role="footer" data-position="fixed">
