@@ -44,7 +44,7 @@ ul li a img {
     background-color: white;
 }
 
-.doclist-name, .medlist-name {
+.doclist-name, .medlist-name, .conlist-number {
     color: rgb(107, 107, 107);
     font-weight: 100;
     font-size: 0.85em !important;
@@ -56,7 +56,7 @@ ul li a img {
     font-size: 0.80em !important;
 }
 
-.doclist-item, .medlist-item {
+.doclist-item, .medlist-item, .conlist-item {
     height: 60px;
 }
 
@@ -64,7 +64,8 @@ ul li a img {
     margin-top: 0px !important;
 }
 
-.ui-content.doclist.ui-listview.ui-listview-inset.ui-corner-all.ui-shadow, .ui-content.medlist.ui-listview.ui-listview-inset.ui-corner-all.ui-shadow {
+.ui-content.doclist.ui-listview.ui-listview-inset.ui-corner-all.ui-shadow, .ui-content.medlist.ui-listview.ui-listview-inset.ui-corner-all.ui-shadow, 
+.ui-content.conlist.ui-listview.ui-listview-inset.ui-corner-all.ui-shadow{
     padding: 16px 0px;
 }
 
@@ -72,7 +73,7 @@ ul li a img {
     margin: 16px;
 }
 
-.ui-content.doclist, .ui-content.medlist {
+.ui-content.doclist, .ui-content.medlist, .ui-content.conlist {
     padding: 0px;
 }
 
@@ -94,6 +95,13 @@ ul li a img {
     background-color: rgb(253, 253, 253);
     border-color: rgb(230, 229, 229);
     box-shadow: none;
+}
+
+.info-con-li.conlist-item.ui-li-static.ui-body-inherit {
+    background-color: rgb(253, 253, 253);
+    border-color: rgb(230, 229, 229);
+    box-shadow: none;
+    padding-bottom: 25px;
 }
 
 .main-menu-item.ui-btn.ui-btn-icon-right.ui-icon-carat-r {
@@ -159,6 +167,10 @@ h2 {
 .ui-link.ui-btn.ui-icon-delete.ui-btn-icon-right.ui-shadow.ui-corner-all::after {
     background-color: rgb(201, 201, 201); 
     right: .30em;
+}
+
+.ui-input-clear.ui-btn.ui-icon-delete.ui-btn-icon-notext.ui-corner-all::after {
+    background-color: rgb(253, 113, 98);
 }
 
 .appLogo {
@@ -364,4 +376,10 @@ fieldset.ui-field-contain {
     letter-spacing: 0.03em;
     color: rgb(112, 112, 112);
     line-height: 15px;
+}
+
+.ui-li-divider.ui-bar-inherit {
+    background-color: rgb(247, 247, 247);
+    border-color: rgb(240, 239, 239);
+    font-weight: 100;
 }

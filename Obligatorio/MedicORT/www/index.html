@@ -23,7 +23,6 @@
         }
 
         function setSession(mailUser) {
-            sessionStorage.clear();
             sessionStorage.setItem("session", mailUser);
         }
 
@@ -33,6 +32,14 @@
 
          function setDoctor(id,nombreDoc,apellidoDoc) {
             sessionStorage.setItem(id,nombreDoc + ' ' + apellidoDoc);
+        }      
+
+        function getCalificacion() {
+            return sessionStorage.getItem("calificacion");
+        }
+
+         function setCalificacion(user,doctor) {
+            sessionStorage.setItem("calificacion",user + ' ' + doctor);
         }       
 
         function loadingShow() {
@@ -63,11 +70,17 @@
                        window.location.replace("#main-menu");
                     }
 				},
-                error: function(data){
+                error: function(data,jqXHR){
                     loadingHide();
-                    if(!data.resultado_login) {
-                        $('#PopupLogin').popup();
-                        $("#PopupLogin").popup("open");
+                    if(jqXHR.status = 500) {
+                        if(!data.resultado_login) {
+                            $('#PopupLogin').popup();
+                            $("#PopupLogin").popup("open");
+
+                            $(".ui-ok-button").unbind("click").bind("click",function(){
+                                $("#PopupLogin").popup("close");
+                            });
+                        }
                     }
                 }
 			});
@@ -94,6 +107,10 @@
                         if(data.retorno = "ERROR") {
                             $('#PopupRegister').popup();
                             $("#PopupRegister").popup("open"); 
+
+                            $(".ui-ok-button").unbind("click").bind("click",function(){
+                                $("#PopupRegister").popup("close");
+                            });
                         }
                     }
                 }
@@ -115,9 +132,8 @@
                             $('#listviewDoc').empty();
                             setDoctor(aux.id,aux.nombre,aux.apellido);
                             items.push('<li id="' + aux.id + '" class="info-doc-li"><a href="#info-doc-detalle" data-transition="slide" class="doclist-item">' +
-                            '<img src="' + aux.foto + '" alt="Imagen doctor"><h3 class="doclist-name">' +
-                            aux.nombre + ' ' + aux.apellido + '</h3><p class="doclist-specialty">' + 
-                            aux.especialidad + '</p></a></li>');
+                            '<img src="' + aux.foto + '" alt="Imagen doctor"><h3 id="' + aux.id + '" class="doclist-name">' +
+                            aux.nombre + ' ' + aux.apellido + ' ' + '</h3><p class="doclist-specialty">' + aux.especialidad + '</p></a></li>');
                         });
                         $('#listviewDoc').append(items.join(''));
                         $('#listviewDoc').listview().listview('refresh');
@@ -126,6 +142,50 @@
                             getDetalleProfesional(this.id);
                         });
                     }
+                },
+                error: function(data,jqXHR) {
+                    loadingHide();
+                    if(jqXHR.status = 500) {
+                        if(data.retorno = "ERROR") {
+                            $('#PopupRegister').popup();
+                            $("#PopupRegister").popup("open"); 
+                        }
+                    }
+                }
+            });
+        }
+
+		function getProfesionalesPorEspecialidad(){
+            loadingShow();
+			$.ajax({
+                data: {especialidad: $('#doclist-esp').val()},
+				type: "GET",
+				dataType: "json",
+				url: "http://medicort.tribus.com.uy/getProfesionalesPorEspecialidad",
+				success: function(data){
+                    loadingHide();
+                    if(data.retorno = "OK") {
+                        if(data.profesionales.length > 0) {
+                            $('#listviewDocEsp').empty();
+                            var items = []; 
+                            $.each(data.profesionales, function(i,item) {
+                                var aux = data.profesionales[i];
+                                    $('#listviewDocEsp').empty();
+                                    setDoctor(aux.id,aux.nombre,aux.apellido);
+                                    items.push('<li id="' + aux.id + '" class="info-doc-li"><a href="#info-doc-detalle" data-transition="slide" class="doclist-item">' +
+                                    '<img src="' + aux.foto + '" alt="Imagen doctor"><h3 id="' + aux.id + '" class="doclist-name">' +
+                                    aux.nombre + ' ' + aux.apellido + ' ' + '</h3><p class="doclist-specialty">' + aux.especialidad + '</p></a></li>');
+                                });
+                                $('#listviewDocEsp').append(items.join(''));
+                                $('#listviewDocEsp').listview().listview('refresh');
+
+                                $('#listviewDocEsp li').click(function(){
+                                    getDetalleProfesional(this.id);
+                                });
+                            } else {
+                                alert("no encontramo nada capo");
+                            }
+                        }
                 }
             });
         }
@@ -140,24 +200,25 @@
 				url: "http://medicort.tribus.com.uy/getDetalleProfesional",
 				success: function(data){
                     if(data.retorno = "OK") {
+                        loadingHide();
                         var items = []; 
                         $(".card").html("");
-                        loadingHide();
                         items.push('<img src="' + data.profesional.foto + '" alt="Imagen doctor en detalle" class="card-img"><div class="container">' + 
                         '<h3 class="card-name">' + data.profesional.nombre + ' ' + data.profesional.apellido + 
                         '</h3><h5 class="card-title">' + data.profesional.titulo + '</h5><h5 class="card-prof">' + 
                         data.profesional.especialidad + '</h5><h3 class="card-punt">' + (Math.round(data.profesional.puntuacion * 100) / 100)  + 
                         '</h3><a class="ui-btn ui-btn-b ui-corner-all card-clin">' + data.profesional.centroMedico.nombre + '</a></div>');
                         $('.card').append(items.join(''));
-                            $("#reservar-consulta").click(function() {
-                                 //fijarConsultaMedica(data.profesional.id,getSession(),data.profesional.nombre,data.profesional.apellido,data.profesional.centroMedico.nombre);
-                            });
 
-                        $("#calificar-consulta").click(function() {
+                        $("#reservar-consulta").unbind("click").bind("click",function(){
+                            fijarConsultaMedica(data.profesional.id,getSession(),data.profesional.nombre,data.profesional.apellido,data.profesional.centroMedico.nombre);
+                        });
+
+                        $("#calificar-consulta").unbind("click").bind("click",function(){
                             $('#PopupPuntaje').popup();
                             $('#PopupPuntaje').popup('open');
 
-                            $("#ui-ok-button-puntaje").click(function() {
+                            $("#ui-ok-button-puntaje").unbind("click").bind("click",function(){
                                 asignarPuntajeAProfesional(data.profesional.nombre,data.profesional.apellido);
                             });  
                         });
@@ -173,9 +234,10 @@
             });
         }
 
-        function splitDoctor(id) {
-            var doctor = getDoctor(id);
-            var split = doctor.split(" ");
+        function splitDoctor(idDoc) {
+            var doctor = getDoctor(idDoc);
+            var split = [];
+            split = doctor.split(" ");
             return split;
         }
 
@@ -187,10 +249,10 @@
 				type: "POST",
 				dataType: "json",
 				url: "http://medicort.tribus.com.uy/fijarConsultaMedica",
-				success: function(data){
+				success: function(data) {
                     loadingHide();
                     if(data.retorno = "OK") {
-                            alert("Gracias " + nombreDoc + ' ' + apellidoDoc);
+                        alert("Gracias " + emailUser + ", tu doctor será " + nombreDoc + ' ' + apellidoDoc + " y te atenderá el " + fecha + " en la " + nombreMed);
                     }
 				},
                 error: function(data,jqXHR) {
@@ -215,16 +277,52 @@
                     loadingHide();
                     if(data.retorno = "OK") {
                         $('.card-punt').text((Math.round(data.nuevoPuntaje * 100) / 100));
+                        setCalificacion(getSession(),getDoctor());
+                        alert(getSession() + ' calificó ' + $('#doctorCal').val());
                     }
 				},
                 error: function(data,jqXHR) {
                     loadingHide();
                     if(jqXHR.status = 500) {
                         if(data.retorno = "ERROR") {
+                            alert("error capo")
                         }
                     }
                 }
 			});
+        }
+
+		function getHistorialConsultasMedicas(){
+            loadingShow();
+			$.ajax({
+                data: {email: getSession()},
+				type: "GET",
+				dataType: "json",
+				url: "http://medicort.tribus.com.uy/getHistorialConsultasMedicas",
+				success: function(data){
+                    loadingHide();
+                    if(data.retorno = "OK") {
+                    var items = []; 
+                    $.each(data.consultasMedicas, function(i,item) {
+                        var aux = data.consultasMedicas[i];
+                            $('#listviewCon').empty();
+                            items.push('<li data-role="list-divider">' + parseDate(aux.fechaHora) + '</li><li class="info-con-li conlist-item">' +
+                            '<h3 class="conlist-number">#' + aux.id + ' - ' + 
+                            aux.profesional.especialidad + '</h3><p class="conlist-med">' + aux.centroMedico.nombre + '</p><p class="conlist-dr">Dr/a. ' + 
+                            aux.profesional.nombre + ' ' + aux.profesional.apellido + '</p></li>');
+                            parseDate(aux.fechaHora);
+                        });
+                        $('#listviewCon').append(items.join(''));
+                        $('#listviewCon').listview().listview('refresh');
+                        
+                    }
+                }
+            });
+        }     
+
+        function parseDate(fechaHora) {
+            var fecha = new Date(fechaHora);
+            return fecha.toLocaleDateString('en-GB', { hour: 'numeric', minute: 'numeric', hour12: true });
         }
 
 		function getCentrosMedicos(){
@@ -241,9 +339,7 @@
                         var aux = data.centrosMedicos[i];
                             $('#listviewMed').empty();
                             items.push('<li class="info-med-li"><a href="#info-med-detalle" data-transition="slide" class="medlist-item">' +
-                            '<h3 class="medlist-name">' + aux.nombre +
-                            '</h3><p class="ui-li-aside"><p class="medlist-adress">' + aux.direccion + 
-                            '</p></a></li>');
+                            '<h3 class="medlist-name">' + aux.nombre + '</h3><p class="medlist-adress">' + aux.direccion + '</p></a></li>');
                         });
                         $('#listviewMed').append(items.join(''));
                         $('#listviewMed').listview().listview('refresh');
@@ -275,7 +371,7 @@
 
     <div data-role="page" id="login">
         <div data-role="header">
-        <a href="#start-menu" data-rel="back" data-transition="slide" data-direction="reverse" data-icon="arrow-left"
+        <a href="#start-menu" data-transition="slide" data-direction="reverse" data-icon="arrow-left"
         class="ui-link ui-btn ui-icon-arrow-left ui-btn-icon-left ui-shadow ui-corner-all"></a>
         <img class="appLogo" src="img/images/heartbeat.png" alt="logo"> 
         </div>
@@ -301,18 +397,18 @@
             <div role="main" class="ui-content popup-text">
                 <h3 class="ui-title">Tu email y/o contraseña son incorrectos</h3>
                     <p class="ui-subtitle">¡Vuelve a intentarlo!</p>
-                <a href="#" class="ui-btn ui-btn-b ui-corner-all ui-ok-button" data-rel="back" data-transition="slideup">OK</a>
+                <a href="#" class="ui-btn ui-btn-b ui-corner-all ui-ok-button" data-transition="slideup">OK</a>
             </div>
         </div>
         </div>
-        <div data-role="footer" data-position="fixed">
-            <h4></h4>
-        </div>
+            <div data-role="footer" data-position="fixed">
+                <h4></h4>
+            </div>
         </div>
 
     <div data-role="page" id="register">
         <div data-role="header">
-            <a href="#start-menu" data-rel="back" data-transition="slide" data-direction="reverse" data-icon="arrow-left"
+            <a href="#start-menu" data-transition="slide" data-direction="reverse" data-icon="arrow-left"
             class="ui-link ui-btn ui-icon-arrow-left ui-btn-icon-left ui-shadow ui-corner-all"></a>
             <img class="appLogo" src="img/images/heartbeat.png" alt="logo"> 
         </div>
@@ -356,7 +452,7 @@
                 <div role="main" class="ui-content popup-text">
                     <h3 class="ui-title">Ya existe un usuario con ese email o teléfono</h3>
                         <p class="ui-subtitle">¡Vuelve a intentarlo!</p>
-                    <a href="#" class="ui-btn ui-btn-b ui-corner-all ui-ok-button" data-rel="back" data-transition="slideup">OK</a>
+                    <a href="#" class="ui-btn ui-btn-b ui-corner-all ui-ok-button" data-transition="slideup">OK</a>
                 </div>
             </div>
         </div>
@@ -373,7 +469,8 @@
         <div role="main" class="ui-content">
             <ul data-role="listview">
                 <li><a href="#info-doc" data-transition="slide" class="main-menu-item" onclick="getProfesionales()">Buscar profesionales</a></li>
-                <li><a href="#" data-transition="slide" class="main-menu-item">Mis consultas</a></li>
+                <li><a href="#info-doc-esp" data-transition="slide" class="main-menu-item">Buscar por especialidad</a></li>
+                <li><a href="#consultas-med" data-transition="slide" class="main-menu-item" onclick="getHistorialConsultasMedicas()">Mis consultas</a></li>
                 <li><a href="#centro-med" data-transition="slide" class="main-menu-item" onclick="getCentrosMedicos()">Centros médicos</a></li>
                 <li><a href="#" data-transition="slide" class="main-menu-item">Favoritos</a></li>
                 <li><a href="#start-menu" data-transition="slide" data-direction="reverse" class="main-menu-item">Cerrar sesión</a></li>
@@ -386,7 +483,7 @@
 
     <div data-role="page" id="info-doc">
         <div data-role="header">
-            <a href="#main-menu" data-rel="back" data-transition="slide" data-direction="reverse" data-icon="arrow-left"
+            <a href="#main-menu" data-transition="slide" data-direction="reverse" data-icon="arrow-left"
             class="ui-link ui-btn ui-icon-arrow-left ui-btn-icon-left ui-shadow ui-corner-all"></a>
             <h1 class="ui-title-page">Profesionales</h1>
         </div>
@@ -404,9 +501,31 @@
         </div>
     </div>
 
+    <div data-role="page" id="info-doc-esp">
+        <div data-role="header">
+            <a href="#main-menu" data-transition="slide" data-direction="reverse" data-icon="arrow-left"
+            class="ui-link ui-btn ui-icon-arrow-left ui-btn-icon-left ui-shadow ui-corner-all"></a>
+            <h1 class="ui-title-page">Especialidades</h1>
+        </div>
+
+        <div role="main" class="ui-content doclist">
+            <input id="doclist-esp" data-type="search" placeholder="Buscar..">
+
+            <ul id="listviewDocEsp" data-role="listview" data-inset="true">
+            </ul>
+            <div class="button" id="esp-button">
+                <a href="#" data-role="button" class="ui-btn ui-btn-b ui-corner-all" onclick="getProfesionalesPorEspecialidad()">Buscar</a>
+            </div>
+        </div>
+
+        <div data-role="footer" data-position="fixed">
+            <h4></h4>
+        </div>
+    </div>
+
     <div data-role="page" id="info-doc-detalle">
             <div data-role="header">
-                <a href="#info-doc" data-rel="back" data-transition="slide" data-direction="reverse" data-icon="arrow-left"
+                <a href="#info-doc" data-transition="slide" data-direction="reverse" data-icon="arrow-left"
                 class="ui-link ui-btn ui-icon-arrow-left ui-btn-icon-left ui-shadow ui-corner-all"></a>
                 <h1 class="ui-title-page">Detalle de profesional</h1>
             </div>
@@ -434,8 +553,8 @@
                     <div role="main" class="ui-content popup-text">
                         <h3 class="ui-title">Por favor, ingresa calificación para tu doctor</h3>
                         <input type="number" name="doctorcal" id="doctorCal">
-                        <a href="#" id="ui-ok-button-puntaje" class="ui-btn ui-btn-b ui-corner-all ui-ok-button" data-rel="back" data-transition="slideup"
-                        onclick="asignarPuntajeAProfesional()">OK</a>
+                        <a href="#" id="ui-ok-button-puntaje" class="ui-btn ui-btn-b ui-corner-all ui-ok-button" data-transition="slideup"
+                        onclick="$('#PopupPuntaje').popup('close');">OK</a>
                     </div>
                 </div>
             </div>
@@ -443,7 +562,7 @@
 
         <div data-role="page" id="doc-consulta">
             <div data-role="header">
-                <a href="#info-doc-detalle" data-rel="back" data-transition="slideup" data-direction="reverse" data-icon="arrow-left"
+                <a href="#info-doc-detalle" data-transition="slideup" data-direction="reverse" data-icon="arrow-left"
                 class="ui-link ui-btn ui-icon-arrow-left ui-btn-icon-left ui-shadow ui-corner-all"></a>
                 <h1 class="ui-title-page">Agendar consulta</h1>
             </div>
@@ -458,12 +577,28 @@
                     <fieldset data-role="fieldcontain">
                     <label class="ReservaInput" for="horaRes">Hora</label>
                     <input type="text" name="hora" id="horaRes" data-role="datebox" data-options='{"mode":"timebox"}'>
-                    </fieldset>              
-                <div class="button">
-                    <a href="#" id="reservar-consulta" class="ui-btn ui-btn-b ui-corner-all">Reservar</a>
-                </div>
-            </form>
+                    </fieldset>  
+                    <div id="btnRes">           
+                        <a href="#" id="reservar-consulta" class="ui-btn ui-btn-b ui-corner-all">Reservar</a>
+                    </div> 
+                </form>
             </div>
+        <div data-role="footer" data-position="fixed">
+            <h4></h4>
+        </div>
+    </div>
+
+    <div data-role="page" id="consultas-med">
+        <div data-role="header">
+            <a href="#main-menu" data-transition="slide" data-direction="reverse" data-icon="arrow-left"
+            class="ui-link ui-btn ui-icon-arrow-left ui-btn-icon-left ui-shadow ui-corner-all"></a>
+            <h1 class="ui-title-page">Mis consultas</h1>
+        </div>
+
+        <div role="main" class="ui-content conlist">
+            <ul id="listviewCon" data-role="listview" data-inset="true">
+            </ul>
+        </div>
         <div data-role="footer" data-position="fixed">
             <h4></h4>
         </div>
@@ -471,17 +606,17 @@
 
         <div data-role="page" id="centro-med">
             <div data-role="header">
-                <a href="#main-menu" data-rel="back" data-transition="slide" data-direction="reverse" data-icon="arrow-left"
+                <a href="#main-menu" data-transition="slide" data-direction="reverse" data-icon="arrow-left"
                 class="ui-link ui-btn ui-icon-arrow-left ui-btn-icon-left ui-shadow ui-corner-all"></a>
-                <img class="appLogo" src="img/images/heartbeat.png" alt="logo"> 
+                <h1 class="ui-title-page">Clínicas</h1>
             </div>
 
             <div role="main" class="ui-content medlist">
                 <form class="ui-filterable">
                     <input id="filter-medlist" data-type="search" placeholder="Buscar..">
                 </form>
-            <ul id="listviewMed" data-role="listview" data-inset="true" data-filter="true" data-input="#filter-medlist">
-            </ul>
+                <ul id="listviewMed" data-role="listview" data-inset="true" data-filter="true" data-input="#filter-medlist">
+                </ul>
             </div>  
         <div data-role="footer" data-position="fixed">
             <h4></h4>
