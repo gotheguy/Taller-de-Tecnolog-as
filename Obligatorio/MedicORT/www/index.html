@@ -11,6 +11,7 @@
     <script src="js/jquery-1.8.3.min.js"></script>
     <script src="js/jquery.mobile-1.4.5.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/jtsage-datebox-jqm@4.4.1/jtsage-datebox.min.js"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDhfTvXeR1_KtzXelJWoMu64w9RaZ7bmE8&callback=initMap" async defer></script>
     <script>
         $(document).ready(function(){
             $("div").html(function (i, html) {
@@ -81,6 +82,13 @@
                                 $("#PopupLogin").popup("close");
                             });
                         }
+                    } else {
+                        $('#Popupgen').popup();
+                        $("#Popupgen").popup("open");
+
+                        $(".ui-ok-button").unbind("click").bind("click",function(){
+                            $("#Popupgen").popup("close");
+                        });
                     }
                 }
 			});
@@ -112,6 +120,13 @@
                                 $("#PopupRegister").popup("close");
                             });
                         }
+                    } else {
+                        $('#Popupgen').popup();
+                        $("#Popupgen").popup("open");
+
+                        $(".ui-ok-button").unbind("click").bind("click",function(){
+                            $("#Popupgen").popup("close");
+                        });
                     }
                 }
 			});
@@ -147,8 +162,12 @@
                     loadingHide();
                     if(jqXHR.status = 500) {
                         if(data.retorno = "ERROR") {
-                            $('#PopupRegister').popup();
-                            $("#PopupRegister").popup("open"); 
+                            $('#Popupgen').popup();
+                            $("#Popupgen").popup("open");
+
+                            $(".ui-ok-button").unbind("click").bind("click",function(){
+                                $("#Popupgen").popup("close");
+                            });
                         }
                     }
                 }
@@ -182,10 +201,21 @@
                                 $('#listviewDocEsp li').click(function(){
                                     getDetalleProfesional(this.id);
                                 });
-                            } else {
-                                alert("no encontramo nada capo");
                             }
                         }
+                },
+                error: function(data,jqXHR) {
+                    loadingHide();
+                    if(jqXHR.status = 500) {
+                        if(data.retorno = "ERROR") {
+                            $('#Popupgen').popup();
+                            $("#Popupgen").popup("open");
+
+                            $(".ui-ok-button").unbind("click").bind("click",function(){
+                                $("#Popupgen").popup("close");
+                            });
+                        }
+                    }
                 }
             });
         }
@@ -217,10 +247,7 @@
                         $("#calificar-consulta").unbind("click").bind("click",function(){
                             $('#PopupPuntaje').popup();
                             $('#PopupPuntaje').popup('open');
-
-                            $("#ui-ok-button-puntaje").unbind("click").bind("click",function(){
-                                asignarPuntajeAProfesional(data.profesional.nombre,data.profesional.apellido);
-                            });  
+                            asignarPuntajeAProfesional(data.profesional.nombre,data.profesional.apellido);
                         });
                     }
                 },
@@ -228,6 +255,12 @@
                     loadingHide();
                     if(jqXHR.status = 500) {
                         if(data.retorno = "ERROR") {
+                            $('#Popupgen').popup();
+                            $("#Popupgen").popup("open");
+
+                            $(".ui-ok-button").unbind("click").bind("click",function(){
+                                $("#Popupgen").popup("close");
+                            });
                         }
                     }
                 }
@@ -259,7 +292,12 @@
                     loadingHide();
                     if(jqXHR.status = 500) {
                         if(data.retorno = "ERROR") {
-                            alert("ERROR " + idDoc + emailUser + fecha + nombreDoc + apellidoDoc + nombreMed);
+                            $('#Popupgen').popup();
+                            $("#Popupgen").popup("open");
+
+                            $(".ui-ok-button").unbind("click").bind("click",function(){
+                                $("#Popupgen").popup("close");
+                            });
                         }
                     }
                 }
@@ -278,6 +316,10 @@
                     if(data.retorno = "OK") {
                         $('.card-punt').text((Math.round(data.nuevoPuntaje * 100) / 100));
                         setCalificacion(getSession(),getDoctor());
+                        
+                        $(".ui-ok-button").unbind("click").bind("click",function(){
+                            $("#PopupPuntjae").popup("close");
+                        });  
                         alert(getSession() + ' calificó ' + $('#doctorCal').val());
                     }
 				},
@@ -285,7 +327,12 @@
                     loadingHide();
                     if(jqXHR.status = 500) {
                         if(data.retorno = "ERROR") {
-                            alert("error capo")
+                            $('#Popupgen').popup();
+                            $("#Popupgen").popup("open");
+
+                            $(".ui-ok-button").unbind("click").bind("click",function(){
+                                $("#Popupgen").popup("close");
+                            });
                         }
                     }
                 }
@@ -314,7 +361,19 @@
                         });
                         $('#listviewCon').append(items.join(''));
                         $('#listviewCon').listview().listview('refresh');
-                        
+                    }
+                },
+                error: function(data,jqXHR) {
+                    loadingHide();
+                    if(jqXHR.status = 500) {
+                        if(data.retorno = "ERROR") {
+                            $('#Popupgen').popup();
+                            $("#Popupgen").popup("open");
+
+                            $(".ui-ok-button").unbind("click").bind("click",function(){
+                                $("#Popupgen").popup("close");
+                            });
+                        }
                     }
                 }
             });
@@ -340,13 +399,56 @@
                             $('#listviewMed').empty();
                             items.push('<li class="info-med-li"><a href="#info-med-detalle" data-transition="slide" class="medlist-item">' +
                             '<h3 class="medlist-name">' + aux.nombre + '</h3><p class="medlist-adress">' + aux.direccion + '</p></a></li>');
+                            initMap(aux.localizacion.latitud,aux.localizacion.longitud);
                         });
                         $('#listviewMed').append(items.join(''));
                         $('#listviewMed').listview().listview('refresh');
                     }
+                },
+                error: function(data,jqXHR) {
+                    loadingHide();
+                    if(jqXHR.status = 500) {
+                        if(data.retorno = "ERROR") {
+                            $('#Popupgen').popup();
+                            $("#Popupgen").popup("open");
+
+                            $(".ui-ok-button").unbind("click").bind("click",function(){
+                                $("#Popupgen").popup("close");
+                            });
+                        }
+                    }
                 }
             });
         }
+        function initMap(latMed,longMed) {
+        var directionsDisplay = new google.maps.DirectionsRenderer;
+        var directionsService = new google.maps.DirectionsService;
+        var map = new google.maps.Map(document.getElementById('map'), {
+          zoom: 14,
+          center: {lat: 37.77, lng: -122.447}
+        });
+        directionsDisplay.setMap(map);
+
+        calculateAndDisplayRoute(directionsService, directionsDisplay, latMed, longMed);
+      }
+
+      function calculateAndDisplayRoute(directionsService, directionsDisplay) {
+        var selectedMode = "DRIVING";
+        directionsService.route({
+          origin: {lat: 37.77, lng: -122.447},  // Haight.
+          destination: {lat: 37.768, lng: -122.511},  // Ocean Beach.
+          // Note that Javascript allows us to access the constant
+          // using square brackets and a string value as its
+          // "property."
+          travelMode: google.maps.TravelMode[selectedMode]
+        }, function(response, status) {
+          if (status == 'OK') {
+            directionsDisplay.setDirections(response);
+          } else {
+            window.alert('Directions request failed due to ' + status);
+          }
+        });
+      }
     </script>
 </head>
 <body>
@@ -400,6 +502,16 @@
                 <a href="#" class="ui-btn ui-btn-b ui-corner-all ui-ok-button" data-transition="slideup">OK</a>
             </div>
         </div>
+        <div data-role="popup" id="PopupGen" class="Popup" data-overlay-theme="a" data-theme="a" data-dismissible="true" data-transition="slideup">
+                <div data-role="header" data-theme="a">
+                    <h1>¡Upsss!</h1>
+                </div>
+                <div role="main" class="ui-content popup-text">
+                    <h3 class="ui-title">Ha ocurrido un error</h3>
+                        <p class="ui-subtitle">¡Vuelve a intentarlo!</p>
+                    <a href="#" class="ui-btn ui-btn-b ui-corner-all ui-ok-button" data-transition="slideup">OK</a>
+                </div>
+            </div>
         </div>
             <div data-role="footer" data-position="fixed">
                 <h4></h4>
@@ -553,8 +665,7 @@
                     <div role="main" class="ui-content popup-text">
                         <h3 class="ui-title">Por favor, ingresa calificación para tu doctor</h3>
                         <input type="number" name="doctorcal" id="doctorCal">
-                        <a href="#" id="ui-ok-button-puntaje" class="ui-btn ui-btn-b ui-corner-all ui-ok-button" data-transition="slideup"
-                        onclick="$('#PopupPuntaje').popup('close');">OK</a>
+                        <a href="#" id="ui-ok-button-puntaje" class="ui-btn ui-btn-b ui-corner-all ui-ok-button" data-transition="slideup">OK</a>
                     </div>
                 </div>
             </div>
@@ -621,6 +732,18 @@
         <div data-role="footer" data-position="fixed">
             <h4></h4>
         </div>
+    </div>
+
+    <div data-role="page" id="info-med-detalle">
+        <div data-role="header">
+            <a href="#centro-med" data-transition="slide" data-direction="reverse" data-icon="arrow-left"
+            class="ui-link ui-btn ui-icon-arrow-left ui-btn-icon-left ui-shadow ui-corner-all"></a>
+            <h1 class="ui-title-page">Clínica</h1>
+        </div>
+
+        <div role="main" class="ui-content medlist">
+            <div id="map"></div>
+        </div>  
     </div>
 </body>
 </html>
