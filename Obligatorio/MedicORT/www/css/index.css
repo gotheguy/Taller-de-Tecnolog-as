@@ -44,14 +44,14 @@ ul li a img {
     background-color: white;
 }
 
-.doclist-name, .medlist-name, .conlist-number {
+.doclist-name, .medlist-name, .conlist-number, .favlist-name {
     color: rgb(107, 107, 107);
     font-weight: 100;
     font-size: 0.85em !important;
     text-overflow: ellipsis;
 }
 
-.doclist-specialty, .medlist-adress {
+.doclist-specialty, .medlist-adress, .favlist-specialty .favlist-centro {
     color: rgb(107, 107, 107);
     font-size: 0.80em !important;
 }
@@ -60,12 +60,16 @@ ul li a img {
     height: 60px;
 }
 
+.favlist-item {
+    height: 85px;
+}
+
 .ui-listview.ui-listview-inset.ui-corner-all.ui-shadow {
     margin-top: 0px !important;
 }
 
 .ui-content.doclist.ui-listview.ui-listview-inset.ui-corner-all.ui-shadow, .ui-content.medlist.ui-listview.ui-listview-inset.ui-corner-all.ui-shadow, 
-.ui-content.conlist.ui-listview.ui-listview-inset.ui-corner-all.ui-shadow{
+.ui-content.conlist.ui-listview.ui-listview-inset.ui-corner-all.ui-shadow, .ui-content.favlist.ui-listview.ui-listview-inset.ui-corner-all.ui-shadow {
     padding: 16px 0px;
 }
 
@@ -73,12 +77,16 @@ ul li a img {
     margin: 16px;
 }
 
-.ui-content.doclist, .ui-content.medlist, .ui-content.conlist {
+.ui-content.doclist, .ui-content.medlist, .ui-content.conlist, .ui-content.favlist {
     padding: 0px;
 }
 
 .doclist-item.ui-btn.ui-btn-icon-right.ui-icon-carat-r, .medlist-item.ui-btn.ui-btn-icon-right.ui-icon-carat-r {
     padding: 11.2px 50px 0px 80px;
+}
+
+.favlist-item.ui-btn {
+    padding: 11.2px 50px 0px 140px !important; 
 }
 
 .medlist-item.ui-btn.ui-btn-icon-right.ui-icon-carat-r {
@@ -91,7 +99,8 @@ ul li a img {
     box-shadow: none;
 }
 
-.doclist-item.ui-btn.ui-btn-icon-right.ui-icon-carat-r, .main-menu-item.ui-btn.ui-btn-icon-right.ui-icon-carat-r, .medlist-item.ui-btn.ui-btn-icon-right.ui-icon-carat-r {
+.doclist-item.ui-btn.ui-btn-icon-right.ui-icon-carat-r, .main-menu-item.ui-btn.ui-btn-icon-right.ui-icon-carat-r, .medlist-item.ui-btn.ui-btn-icon-right.ui-icon-carat-r,
+.favlist-item.ui-btn.ui-btn-icon-right.ui-icon-carat-r {
     background-color: rgb(253, 253, 253);
     border-color: rgb(230, 229, 229);
     box-shadow: none;
@@ -112,7 +121,7 @@ ul li a img {
 }
 
 .doclist-item.ui-btn.ui-btn-icon-right.ui-icon-carat-r::after, .main-menu-item.ui-btn.ui-btn-icon-right.ui-icon-carat-r::after,
-.medlist-item.ui-btn.ui-btn-icon-right.ui-icon-carat-r::after {
+.medlist-item.ui-btn.ui-btn-icon-right.ui-icon-carat-r::after, .favlist-item.ui-btn.ui-btn-icon-right.ui-icon-carat-r::after {
     background-color: rgb(216, 216, 216);
     right: 1.5em;
 }
@@ -385,5 +394,17 @@ fieldset.ui-field-contain {
 }
 
 #map {
-    height: 450px !important;
+    height: 500px;
+}
+
+.medlist-detalle {
+    padding: 0px;
+}
+
+.img-fav {
+    border-radius: 0px !important;
+    margin: 0px;
+    max-width: 120px !important;
+    max-height: 7em !important;
+    height: 100px !important;
 }

@@ -251,6 +251,10 @@
                         $("#reservar-consulta").unbind("click").bind("click",function(){
                             fijarConsultaMedica(data.profesional.id,getSession(),data.profesional.nombre,data.profesional.apellido,data.profesional.centroMedico.nombre);  
                         });
+                        
+                        $("#agregar-favorito").unbind("click").bind("click",function(){
+                            guardarFavoritos(data.profesional.id,data.profesional.nombre,data.profesional.apellido,data.profesional.especialidad,data.profesional.foto,data.profesional.centroMedico.nombre);
+                        });
 
                         $("#calificar-consulta").unbind("click").bind("click",function(){
                             $('#PopupPuntaje').popup();
@@ -366,6 +370,51 @@
                     }
                 }
 			});
+        }
+
+        function guardarFavoritos(idDoc,nombreDoc,apellidoDoc,especialidadDoc,fotoDoc,centroMed) {
+            var db = window.openDatabase("favDB", "1.0", "FavoritosDB", 1024 * 1024 * 2)
+            var user = getSession();
+
+            db.transaction(function(tx) {
+                tx.executeSql("CREATE TABLE IF NOT EXISTS FavoritosD (id INTEGER, nombre VARCHAR(100), apellido VARCHAR(100), especialidad VARCHAR(100), foto NVARCHAR(250), centroMedico NVARCHAR(200), usuario VARCHAR(100))"); 
+            }); 
+
+            db.transaction(function(tx) {
+                tx.executeSql("INSERT INTO FavoritosD (id,nombre,apellido,especialidad,foto,centroMedico,usuario) VALUES (" + idDoc + ",'" + nombreDoc + "','" + apellidoDoc + "','" + especialidadDoc + "','" + fotoDoc + "','" + centroMed + "','" + user + "')");
+            });
+
+            $('#PopupFavoritos').popup();
+            $("#PopupFavoritos").popup("open");
+
+            $(".ui-ok-button").unbind("click").bind("click",function(){
+                $("#PopupFavoritos").popup("close");
+            });
+        }
+
+        function getFavoritos() {
+            var db = window.openDatabase("favDB", "1.0", "FavoritosDB", 1024 * 1024 * 2)
+            var items = [];
+
+            db.transaction(function (tx) {
+                tx.executeSql("SELECT DISTINCT * FROM FavoritosD", [], function(tx, results) {
+                    if(results.rows.length > 0) {
+                        for(var i = 0; i < results.rows.length; i++) {
+                            var aux = results.rows.item(i);
+                            $('#listviewFav').empty();
+
+                            if(getSession() == aux.usuario) {
+                                items.push('<li class="info-fav-li" data-icon="false"><a href="#" data-transition="slide" class="favlist-item">' +
+                                '<img src="' + aux.foto + '" class="img-fav" alt="Imagen doctor"><h3 id="' + aux.id + '" class="favlist-name">' +
+                                aux.nombre + ' ' + aux.apellido + ' ' + '</h3><p class="favlist-specialty">' + aux.especialidad + '</p>' +
+                                '<p class="favlist-centro">' + aux.centroMedico + '</p></a></li>');
+                            }
+                        }
+                        $('#listviewFav').append(items.join(''));
+                        $('#listviewFav').listview().listview('refresh');
+                    }
+                });
+            });
         }
 
 		function getHistorialConsultasMedicas(){
@@ -631,7 +680,7 @@
                 <li><a href="#info-doc-esp" data-transition="slide" class="main-menu-item">Buscar por especialidad</a></li>
                 <li><a href="#consultas-med" data-transition="slide" class="main-menu-item" onclick="getHistorialConsultasMedicas()">Mis consultas</a></li>
                 <li><a href="#centro-med" data-transition="slide" class="main-menu-item" onclick="getCentrosMedicos()">Centros médicos</a></li>
-                <li><a href="#" data-transition="slide" class="main-menu-item">Favoritos</a></li>
+                <li><a href="#favoritos-med" data-transition="slide" class="main-menu-item" onclick="getFavoritos()">Favoritos</a></li>
                 <li><a href="#start-menu" data-transition="slide" data-direction="reverse" class="main-menu-item">Cerrar sesión</a></li>
             </ul>
         </div>
@@ -727,7 +776,7 @@
                     <ul id="footerOptions">
                         <li><a href="#doc-consulta" data-role="button" data-icon="calendar" data-transition="slideup"
                         class="doclist-option inlineIcon"><span class="doclist-option-text">Agendar</span></a></li>
-                        <li><a href="index.html" data-role="button" data-icon="heart" data-transition="slideup"
+                        <li><a id="agregar-favorito" data-role="button" data-icon="heart" data-transition="slideup"
                         class="doclist-option inlineIcon"><span class="doclist-option-text">Favorito</span></a></li>
                         <li><a id="calificar-consulta" data-role="button" data-icon="star" data-transition="slideup"
                         class="doclist-option inlineIcon"><span class="doclist-option-text">Calificar</span></a></li>
@@ -880,6 +929,42 @@
         </div>
     </div>
 
+    <div data-role="page" id="favoritos-med">
+        <div data-role="header">
+            <a href="#main-menu" data-transition="slide" data-direction="reverse" data-icon="arrow-left"
+            class="ui-link ui-btn ui-icon-arrow-left ui-btn-icon-left ui-shadow ui-corner-all"></a>
+            <h1 class="ui-title-page">Favoritos</h1>
+        </div>
+
+        <div role="main" class="ui-content favlist">
+            <ul id="listviewFav" data-role="listview" data-inset="true">
+            </ul>
+            <div data-role="popup" id="PopupGenFavoritos" class="Popup" data-overlay-theme="a" data-theme="a" data-dismissible="true" data-transition="slideup">
+                <div data-role="header" data-theme="a">
+                    <h1>¡Upsss!</h1>
+                </div>
+                <div role="main" class="ui-content popup-text">
+                    <h3 class="ui-title">Mmmh.. Parece que ha ocurrido un error</h3>
+                        <p class="ui-subtitle">¡Vuelve a intentarlo!</p>
+                    <a href="#" class="ui-btn ui-btn-b ui-corner-all ui-ok-button" data-transition="slideup">OK</a>
+                </div>
+            </div>
+            <div data-role="popup" id="PopupFavoritos" class="Popup" data-overlay-theme="a" data-theme="a" data-dismissible="true" data-transition="slideup">
+                <div data-role="header" data-theme="a">
+                    <h1>¡Yeyyy!</h1>
+                </div>
+                <div role="main" class="ui-content popup-text">
+                    <h3 class="ui-title">Has guardado a tu doctor como favorito</h3>
+                        <p class="ui-subtitle">¡Gracias!</p>
+                    <a href="#" class="ui-btn ui-btn-b ui-corner-all ui-ok-button" data-transition="slideup">OK</a>
+                </div>
+            </div>
+        </div>
+        <div data-role="footer" data-position="fixed">
+            <h4></h4>
+        </div>
+    </div>
+
     <div data-role="page" id="info-med-detalle">
         <div data-role="header">
             <a href="#centro-med" data-transition="slide" data-direction="reverse" data-icon="arrow-left"
@@ -887,9 +972,12 @@
             <h1 class="ui-title-page">Detalle de Centro</h1>
         </div>
 
-        <div role="main" class="ui-content medlist">
+        <div role="main" class="ui-content medlist-detalle">
             <div id="map"></div>
         </div>  
+        <div data-role="footer" data-position="fixed">
+            <h4></h4>
+        </div>
     </div>
 </body>
 </html>
