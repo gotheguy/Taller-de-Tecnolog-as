@@ -106,6 +106,11 @@ ul li a img {
     box-shadow: none;
 }
 
+a.favlist-item.ui-btn {
+    border-top: none !important;
+    border-bottom: 1px solid rgb(230, 229, 229) !important;
+}
+
 .info-con-li.conlist-item.ui-li-static.ui-body-inherit {
     background-color: rgb(253, 253, 253);
     border-color: rgb(230, 229, 229);
@@ -122,7 +127,7 @@ ul li a img {
 
 .doclist-item.ui-btn.ui-btn-icon-right.ui-icon-carat-r::after, .main-menu-item.ui-btn.ui-btn-icon-right.ui-icon-carat-r::after,
 .medlist-item.ui-btn.ui-btn-icon-right.ui-icon-carat-r::after, .favlist-item.ui-btn.ui-btn-icon-right.ui-icon-carat-r::after {
-    background-color: rgb(216, 216, 216);
+    background-color: rgb(255, 125, 110) !important;
     right: 1.5em;
 }
 
@@ -155,31 +160,25 @@ h2 {
     font-weight: 300;
 }
 
-.ui-link.ui-btn.ui-icon-arrow-left.ui-btn-icon-left.ui-shadow.ui-corner-all,.ui-link.ui-btn.ui-icon-arrow-right.ui-btn-icon-right.ui-shadow.ui-corner-all,
-.ui-link.ui-btn.ui-icon-delete.ui-btn-icon-right.ui-shadow.ui-corner-all {
-    background-color: rgb(201, 201, 201);
-    margin-top: 5px;
+.ui-link.ui-btn.ui-icon-arrow-left.ui-btn-icon-left.ui-shadow.ui-corner-all,.ui-link.ui-btn.ui-icon-delete.ui-btn-icon-right.ui-shadow.ui-corner-all {
+    background-color: rgb(241, 72, 53) !important;
+    margin-top: 10px;
     margin-left: 10px;
     padding: 15px;
     border-radius: 100%;
 }
 
 .ui-link.ui-btn.ui-icon-arrow-left.ui-btn-icon-left.ui-shadow.ui-corner-all::after {
-    background-color: rgb(201, 201, 201);
-}
-
-.ui-link.ui-btn.ui-icon-arrow-right.ui-btn-icon-right.ui-shadow.ui-corner-all::after {
-    background-color: rgb(201, 201, 201);
-    right: .22em;
+    background-color: rgb(241, 72, 53) !important;
 }
 
 .ui-link.ui-btn.ui-icon-delete.ui-btn-icon-right.ui-shadow.ui-corner-all::after {
-    background-color: rgb(201, 201, 201); 
+    background-color: rgb(241, 72, 53) !important;
     right: .30em;
 }
 
 .ui-input-clear.ui-btn.ui-icon-delete.ui-btn-icon-notext.ui-corner-all::after {
-    background-color: rgb(253, 113, 98);
+    background-color: rgb(241, 72, 53) !important;
 }
 
 .appLogo {
@@ -187,8 +186,8 @@ h2 {
     margin-left: auto;
     margin-right: auto;
     padding: 10px 0px;
-    width: 30px;
-    height: 30px;
+    width: 40px;
+    height: 40px;
 }
 
 .registerInput {
@@ -207,10 +206,6 @@ fieldset.ui-field-contain {
     padding: 5px 0px !important;
 }
 
-.ui-header {
-    border-bottom: 0px;
-}
-
 .card {
     border: .55px solid rgb(235, 235, 235);
     background-color: rgb(252, 252, 252);
@@ -223,8 +218,9 @@ fieldset.ui-field-contain {
 }
 
 .card-img {
-    width: 150%;
-    height: 363px;
+    width: 100%;
+    height: 23rem;
+    object-fit: cover;
 }
 
 .container {
@@ -240,34 +236,21 @@ fieldset.ui-field-contain {
 .card-title {
     margin: 0px;
     font-size: 0.90em;
-    color: rgb(104, 104, 104);
-    font-weight: 100;
+    color: rgb(156, 156, 156);
 }
 
 .card-prof {
     margin: 5px 0px 0px 0px;
     color: rgb(138, 138, 138);
-    font-weight: 600;
-}
-
-.card-clin {
-    margin: 10px 0px;
-    text-overflow: ellipsis;
-    display: block;
-    text-align: center;
-    text-decoration: none;
-    background-color: rgb(255, 101, 83);
+    font-weight: 200;
 }
 
 .card-punt {
     margin: 0px;
+    padding-top: 20px;
     padding-bottom: 10px;
     text-align: right;
     color: rgb(90, 90, 90);
-}
-
-.ui-btn.ui-btn-b.ui-corner-all.card-clin {
-    margin: 0px 0px 10px 0px;
 }
 
 .doclist-option {
@@ -342,13 +325,23 @@ fieldset.ui-field-contain {
 .ui-header.ui-bar-a {
     height: 50px;
     bottom: 20px;
-    line-height: 20px;
+    line-height: 10px;
     font-size: 1.30em;
     background-color: rgb(240, 240, 240);
 }
 
 .ui-header {
-    background-color: rgb(240, 240, 240) !important;
+    background-color: rgb(255, 111, 95) !important;
+    border-bottom: 0px;
+    padding: 5px 0px;
+}
+
+.card {
+    border: none;
+}
+
+h1 {
+    text-shadow: none;
 }
 
 .ui-title {
@@ -356,6 +349,15 @@ fieldset.ui-field-contain {
     font-size: 1.10em;
     font-weight: 400;
     color: rgb(119, 119, 119);
+    letter-spacing: 0.05em !important; 
+}
+
+p,h1,h2,h3,h4,h5,h6,a {
+    text-shadow: none;
+}
+
+h1.ui-title {
+    color: rgb(255, 255, 255);
 }
 
 .ui-subtitle {
@@ -383,14 +385,16 @@ fieldset.ui-field-contain {
     margin-bottom: 0px !important;
     font-size: 1.10em !important;
     letter-spacing: 0.03em;
-    color: rgb(112, 112, 112);
+    color: rgb(255, 255, 255);
     line-height: 15px;
 }
 
 .ui-li-divider.ui-bar-inherit {
-    background-color: rgb(247, 247, 247);
-    border-color: rgb(240, 239, 239);
+    background-color: rgba(241, 241, 241, 0.897) !important;
+    border: none;
     font-weight: 100;
+    color: rgb(119, 119, 119);
+    text-shadow: none;
 }
 
 #map {
@@ -407,4 +411,48 @@ fieldset.ui-field-contain {
     max-width: 120px !important;
     max-height: 7em !important;
     height: 100px !important;
+}
+
+a.ui-btn-left.ui-link.ui-btn.ui-btn-a.ui-icon-delete.ui-btn-icon-notext.ui-shadow.ui-corner-all {
+    margin-left: 15px;
+}
+
+h1.ui-title {
+    margin-bottom: 0px !important;
+}
+
+.ui-input-clear.ui-btn.ui-icon-calendar.ui-btn-icon-notext.ui-corner-all::after,.ui-input-clear.ui-btn.ui-icon-calendar.ui-btn-icon-notext.ui-corner-all {
+    left: 0px;
+    top: 0px;
+    right: 0px;
+    bottom: 0px;
+    margin: 0px !important;
+    padding: 0px !important;
+}
+
+.ui-focus {
+    box-shadow: none !important;
+}
+
+.ui-btn:focus {
+    box-shadow: none !important; 
+}
+
+.ui-btn-active {
+    background-color: rgb(235, 235, 235) !important;
+}
+
+.main-back-link {
+    margin-top: 15px !important;
+}
+
+h1:active {
+    text-shadow: none;
+}
+
+.title-popup {
+    width: 100%; 
+    box-shadow: 0 0 12px rgba(189, 189, 189, 0.6);
+    background-color: rgb(250, 250, 250);
+    bottom: 130px;
 }

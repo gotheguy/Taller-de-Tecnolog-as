@@ -6,17 +6,17 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="css/jquery.mobile-1.4.5.min.css" type="text/css">
     <link rel="stylesheet" href="img/images/jQuery-Mobile-Icon-Pack-master/dist/jqm-icon-pack-fa.css"/>
-    <link href="https://cdn.jsdelivr.net/npm/jtsage-datebox-jqm@4.4.1/jtsage-datebox.min.css" rel="stylesheet" type="text/css">
     <link rel="stylesheet" href="css/index.css" type="text/css">
     <script src="js/jquery-1.8.3.min.js"></script>
     <script src="js/jquery.mobile-1.4.5.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/jtsage-datebox-jqm@4.4.1/jtsage-datebox.min.js"></script>
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDhfTvXeR1_KtzXelJWoMu64w9RaZ7bmE8" async defer></script>
     <script>
         $(document).ready(function(){
             $("div").html(function (i, html) {
                 return html.replace(/&nbsp;/g, '');
             });
+
+           $(':input').val('');
         });
 
         function getSession() {
@@ -243,9 +243,9 @@
                         $(".card").html("");
                         items.push('<img src="' + data.profesional.foto + '" alt="Imagen doctor en detalle" class="card-img"><div class="container">' + 
                         '<h3 class="card-name">' + data.profesional.nombre + ' ' + data.profesional.apellido + 
-                        '</h3><h5 class="card-title">' + data.profesional.titulo + '</h5><h5 class="card-prof">' + 
-                        data.profesional.especialidad + '</h5><h3 class="card-punt">' + (Math.round(data.profesional.puntuacion * 100) / 100)  + 
-                        '</h3><a class="ui-btn ui-btn-b ui-corner-all card-clin">' + data.profesional.centroMedico.nombre + '</a></div>');
+                        '</h3><h6 class="card-title">' + data.profesional.titulo + '</h6><h5 class="card-prof">' + 
+                        data.profesional.especialidad + ' - ' + data.profesional.centroMedico.nombre + '</h5>' + 
+                        '<h3 class="card-punt">' + (Math.round(data.profesional.puntuacion * 100) / 100) + '</h3></div>');
                         $('.card').append(items.join(''));
 
                         $("#reservar-consulta").unbind("click").bind("click",function(){
@@ -289,9 +289,18 @@
             return split;
         }
 
+        function parseDate2(fechaHora) {
+            var fecha = new Date(fechaHora);
+            fecha = fecha.toLocaleDateString('en-GB', { hour: 'numeric', minute: 'numeric'});
+            fecha = fecha.replace(',','');
+            return fecha;
+        }
+
         function fijarConsultaMedica(idDoc,emailUser,nombreDoc,apellidoDoc,nombreMed) {
 			loadingShow();
             var fecha = $('#fechaRes').val() + ' ' + $('#horaRes').val();
+            fecha = parseDate2(fecha);
+
 			$.ajax({
                 data: {email: emailUser, fechaHora: fecha, nombreProfesional: nombreDoc, apellidoProfesional: apellidoDoc, nombreCentroMedico: nombreMed},
 				type: "POST",
@@ -404,7 +413,7 @@
                             $('#listviewFav').empty();
 
                             if(getSession() == aux.usuario) {
-                                items.push('<li class="info-fav-li" data-icon="false"><a href="#" data-transition="slide" class="favlist-item">' +
+                                items.push('<li class="info-fav-li" data-icon="false"><a data-transition="slide" class="favlist-item">' +
                                 '<img src="' + aux.foto + '" class="img-fav" alt="Imagen doctor"><h3 id="' + aux.id + '" class="favlist-name">' +
                                 aux.nombre + ' ' + aux.apellido + ' ' + '</h3><p class="favlist-specialty">' + aux.especialidad + '</p>' +
                                 '<p class="favlist-centro">' + aux.centroMedico + '</p></a></li>');
@@ -459,7 +468,7 @@
 
         function parseDate(fechaHora) {
             var fecha = new Date(fechaHora);
-            return fecha.toLocaleDateString('en-GB', { hour: 'numeric', minute: 'numeric', hour12: true });
+            return fecha.toLocaleDateString('en-GB', { hour: 'numeric', minute: 'numeric'});
         }
 
 		function getCentrosMedicos(){
@@ -560,7 +569,7 @@
     <div data-role="page" id="login">
         <div data-role="header">
         <a href="#start-menu" data-transition="slide" data-direction="reverse" data-icon="arrow-left"
-        class="ui-link ui-btn ui-icon-arrow-left ui-btn-icon-left ui-shadow ui-corner-all"></a>
+        class="ui-link ui-btn ui-icon-arrow-left ui-btn-icon-left ui-shadow ui-corner-all main-back-link"></a>
         <img class="appLogo" src="img/images/heartbeat.png" alt="logo"> 
         </div>
         
@@ -607,7 +616,7 @@
     <div data-role="page" id="register">
         <div data-role="header">
             <a href="#start-menu" data-transition="slide" data-direction="reverse" data-icon="arrow-left"
-            class="ui-link ui-btn ui-icon-arrow-left ui-btn-icon-left ui-shadow ui-corner-all"></a>
+            class="ui-link ui-btn ui-icon-arrow-left ui-btn-icon-left ui-shadow ui-corner-all main-back-link"></a>
             <img class="appLogo" src="img/images/heartbeat.png" alt="logo"> 
         </div>
         
@@ -728,12 +737,12 @@
 
         <div role="main" class="ui-content doclist">
             <input id="doclist-esp" data-type="search" placeholder="Buscar..">
-
+            <div class="button" id="esp-button">
+                    <a href="#" data-role="button" class="ui-btn ui-btn-b ui-corner-all" onclick="getProfesionalesPorEspecialidad()">Buscar</a>
+                </div>
             <ul id="listviewDocEsp" data-role="listview" data-inset="true">
             </ul>
-            <div class="button" id="esp-button">
-                <a href="#" data-role="button" class="ui-btn ui-btn-b ui-corner-all" onclick="getProfesionalesPorEspecialidad()">Buscar</a>
-            </div>
+
             <div data-role="popup" id="PopupGenEspecialidades" class="Popup" data-overlay-theme="a" data-theme="a" data-dismissible="true" data-transition="slideup">
                 <div data-role="header" data-theme="a">
                     <h1>¡Upsss!</h1>
@@ -837,12 +846,11 @@
                 <form id="formRes" autocomplete="off">
                     <fieldset data-role="fieldcontain">
                     <label class="ReservaInput" for="fechaRes">Fecha</label>
-                    <input type="text" name="fecha" id="fechaRes" data-role="datebox" data-options='{"mode":"calbox", "useLang":"es",
-                    "overrideDateFormat": "%d/%m/%Y" }'>
+                    <input type="date" name="fecha" id="fechaRes">
                     </fieldset>
                     <fieldset data-role="fieldcontain">
                     <label class="ReservaInput" for="horaRes">Hora</label>
-                    <input type="text" name="hora" id="horaRes" data-role="datebox" data-options='{"mode":"timebox"}'>
+                    <input type="time" name="hora" id="horaRes">
                     </fieldset>  
                     <div id="btnRes">           
                         <a href="#" id="reservar-consulta" class="ui-btn ui-btn-b ui-corner-all">Reservar</a>
@@ -939,19 +947,9 @@
         <div role="main" class="ui-content favlist">
             <ul id="listviewFav" data-role="listview" data-inset="true">
             </ul>
-            <div data-role="popup" id="PopupGenFavoritos" class="Popup" data-overlay-theme="a" data-theme="a" data-dismissible="true" data-transition="slideup">
-                <div data-role="header" data-theme="a">
-                    <h1>¡Upsss!</h1>
-                </div>
-                <div role="main" class="ui-content popup-text">
-                    <h3 class="ui-title">Mmmh.. Parece que ha ocurrido un error</h3>
-                        <p class="ui-subtitle">¡Vuelve a intentarlo!</p>
-                    <a href="#" class="ui-btn ui-btn-b ui-corner-all ui-ok-button" data-transition="slideup">OK</a>
-                </div>
-            </div>
             <div data-role="popup" id="PopupFavoritos" class="Popup" data-overlay-theme="a" data-theme="a" data-dismissible="true" data-transition="slideup">
-                <div data-role="header" data-theme="a">
-                    <h1>¡Yeyyy!</h1>
+                <div data-role="header" data-theme="a" class="ui-header ui-bar-a">
+                    <h1 class="ui-title">¡Yeyyy!</h1>
                 </div>
                 <div role="main" class="ui-content popup-text">
                     <h3 class="ui-title">Has guardado a tu doctor como favorito</h3>
