@@ -155,7 +155,7 @@
                             $('#listviewDoc').empty();
                             setDoctor(aux.id,aux.nombre,aux.apellido);
                             items.push('<li id="' + aux.id + '" class="info-doc-li"><a href="#info-doc-detalle" data-transition="slide" class="doclist-item">' +
-                            '<img src="' + aux.foto + '" alt="Imagen doctor"><h3 id="' + aux.id + '" class="doclist-name">' +
+                            '<img id="doclist-img" src="' + aux.foto + '" alt="Imagen doctor"><h3 id="' + aux.id + '" class="doclist-name">' +
                             aux.nombre + ' ' + aux.apellido + ' ' + '</h3><p class="doclist-specialty">' + aux.especialidad + '</p></a></li>');
                         });
                         $('#listviewDoc').append(items.join(''));
